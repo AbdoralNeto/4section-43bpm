@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SisCarga-PM - Gestão de Material Carga
 
 O **SisCarga-PM** é uma aplicação moderna para gestão de estoque e pessoal do **43° Batalhão de Polícia Militar**. O sistema oferece controle total sobre armamento, viatura, equipamentos de informática e mobiliário.
@@ -39,3 +40,6 @@ Para informações detalhadas, consulte os seguintes documentos (KIs):
    npm run dev
    ```
 
+=======
+#  -APP GERENCIAMENTO DE CARGA DO 43° BPM-
+>>>>>>> 0004e0959cff41e98e9401c462e5fb434300232d
