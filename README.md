@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# SisCarga-PM - Gestão de Material Carga
 
-# Run and deploy your AI Studio app
+O **SisCarga-PM** é uma aplicação moderna para gestão de estoque e pessoal do **43° Batalhão de Polícia Militar**. O sistema oferece controle total sobre armamento, viatura, equipamentos de informática e mobiliário.
 
-This contains everything you need to run your app locally.
+## ✨ Funcionalidades Principais
 
-View your app in AI Studio: https://ai.studio/apps/drive/1iDYYOwo-RbWWwxgebh3evvL_ZIOCxCAG
+- **📊 Dashboard Inteligente**: Visão geral de todo o material carga com gráficos dinâmicos.
+- **🛡️ Gestão de Material Bélico**: Controle de armas, munições, das de perícia e validade.
+- **🚗 Gestão de Viaturas**: Monitoramento de quilometragem, placa, prefixo e localização.
+- **👥 Controle de Efetivo**: Cadastro completo de policiais e histórico de acautelamentos.
+- **📝 Auditoria Completa**: Registro automático de todas as ações realizadas no sistema.
+- **📄 Relatórios PDF**: Geração de relatórios profissionais de carga e pessoal.
 
-## Run Locally
+## 🛠️ Stack Tecnológica
 
-**Prerequisites:**  Node.js
+- **Frontend**: React 19 + Vite + TypeScript
+- **Backend/DB**: Supabase (Postgres)
+- **Icons**: Lucide React
+- **Estilo**: Modern Dark Interface
 
+## 📚 Documentação Técnica
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Para informações detalhadas, consulte os seguintes documentos (KIs):
+
+- [Visão Geral da Arquitetura](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/architecture_overview.md)
+- [Esquema do Banco de Dados](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/database_schema.md)
+- [Fluxo de Autenticação](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/authentication_flow.md)
+- [Guia de Configuração Local](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/environment_setup.md)
+
+## 🚀 Como Executar
+
+1. Instale as dependências:
+   ```bash
+   npm install
+   ```
+2. Configure as variáveis do Supabase no arquivo `.env`.
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+
