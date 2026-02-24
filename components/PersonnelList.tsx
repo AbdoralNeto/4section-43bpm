@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Personnel, InventoryItem } from '../types';
 import { UserPlus, Edit2, Trash2, Search, Filter, ShieldCheck, Plus, ArrowRight } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface PersonnelListProps {
   personnel: Personnel[];
@@ -13,6 +14,8 @@ interface PersonnelListProps {
 }
 
 const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onAddMember, onUpdateMember, onDeleteMember }) => {
+  const { session } = useAuth();
+  const isAdmin = session?.role === 'admin';
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Personnel | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -36,7 +39,7 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const member: Personnel = {
-      id: editingMember?.id || Math.random().toString(36).substr(2, 9),
+      id: editingMember?.id || Math.random().toString(36).slice(2, 11),
       rank: formData.get('rank') as string,
       name: formData.get('name') as string,
       registration: formData.get('registration') as string,
@@ -64,9 +67,11 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input type="text" placeholder="Nome ou Matrícula..." className="pl-9 pr-4 py-2 border rounded-lg text-sm bg-slate-50 w-full sm:w-64 focus:ring-2 focus:ring-blue-500/20 outline-none" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
           </div>
-          <button onClick={handleOpenAdd} className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-lg shadow-blue-900/10">
-            <UserPlus size={18} /> <span className="hidden sm:inline">Incluir Policial</span>
-          </button>
+          {isAdmin && (
+            <button onClick={handleOpenAdd} className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-lg shadow-blue-900/10">
+              <UserPlus size={18} /> <span className="hidden sm:inline">Incluir Policial</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -109,8 +114,12 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-1">
-                      <button onClick={() => handleOpenEdit(p)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors"><Edit2 size={16} /></button>
-                      <button onClick={() => onDeleteMember(p.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                      {isAdmin && (
+                        <>
+                          <button onClick={() => handleOpenEdit(p)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors"><Edit2 size={16} /></button>
+                          <button onClick={() => onDeleteMember(p.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>

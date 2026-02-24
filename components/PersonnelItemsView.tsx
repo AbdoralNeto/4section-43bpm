@@ -14,6 +14,7 @@ import {
   Calendar,
   FileText
 } from 'lucide-react';
+import { formatDateLocal } from '../lib/utils';
 
 interface PersonnelItemsViewProps {
   inventory: InventoryItem[];
@@ -118,14 +119,14 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2 text-slate-600">
                     <Calendar size={14} className="opacity-40" />
-                    <span className="text-sm font-medium">{new Date(item.acquisition_date).toLocaleDateString()}</span>
+                    <span className="text-sm font-medium">{formatDateLocal(item.acquisition_date)}</span>
                   </div>
                 </td>
                 <td className="px-6 py-4">
                   {item.expiry_date ? (
                     <div className={`text-[10px] font-black px-2 py-1 rounded w-fit uppercase ${new Date(item.expiry_date) < new Date() ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-700'
                       }`}>
-                      Vence em: {new Date(item.expiry_date).toLocaleDateString()}
+                      Vence em: {formatDateLocal(item.expiry_date)}
                     </div>
                   ) : (
                     <span className="text-xs text-slate-400 italic">Sem prazo determinado</span>

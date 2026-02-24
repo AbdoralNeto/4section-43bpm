@@ -1,7 +1,8 @@
 
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { InventoryItem, Personnel, ItemCategory, BelicoType, AuditLog } from '../types';
+import { InventoryItem, Personnel, ItemCategory, BelicoType, AuditLog, ItemStatus } from '../types';
+import { formatDateLocal } from './utils';
 
 const UNIT_NAME = '43º BPM — Seção de Logística (P4)';
 const SYSTEM_NAME = 'P4 - 43°BPM';
@@ -81,7 +82,7 @@ export function exportInventoryPdf(
         'Status',
         'Localização / Responsável',
         'Observações',
-        'Data Cadastro',
+        'Data Ocorrência/Cad.',
     ]];
 
     const body = items.map((item, idx) => {
@@ -96,6 +97,9 @@ export function exportInventoryPdf(
         else if (item.type === BelicoType.MUNICAO) idValue = `Total: ${item.ammo_total ?? 0} | Usadas: ${item.ammo_spent ?? 0}`;
         else idValue = item.serial_number ?? 'N/A';
 
+        const isSpecialStatus = [ItemStatus.BAIXADO, ItemStatus.MANUTENCAO, ItemStatus.PERICIA].includes(item.status);
+        const displayDate = isSpecialStatus && item.pericia_date ? item.pericia_date : item.acquisition_date;
+
         return [
             String(idx + 1).padStart(2, '0'),
             item.model.toUpperCase(),
@@ -103,7 +107,7 @@ export function exportInventoryPdf(
             item.status,
             locationOrPerson,
             item.observations ?? '—',
-            item.acquisition_date ? new Date(item.acquisition_date).toLocaleDateString('pt-BR') : '—',
+            formatDateLocal(displayDate),
         ];
     });
 

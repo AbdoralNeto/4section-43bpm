@@ -32,6 +32,8 @@ import {
 } from 'lucide-react';
 import { useAudit } from '../contexts/AuditContext';
 import { exportInventoryPdf } from '../lib/exportPdf';
+import { useAuth } from '../contexts/AuthContext';
+import { formatDateLocal } from '../lib/utils';
 
 interface InventoryListProps {
   category: ItemCategory;
@@ -44,6 +46,8 @@ interface InventoryListProps {
 
 const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, personnel, onUpdateItem, onAddItem, onDeleteItem }) => {
   const { addAuditLog } = useAudit();
+  const { session } = useAuth();
+  const isAdmin = session?.role === 'admin';
 
   const [activeSubTab, setActiveSubTab] = useState<BelicoType | 'TODOS'>(
     category === ItemCategory.BELICO ? BelicoType.ARMA : 'TODOS'
@@ -107,7 +111,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
     const expiryYear = formData.get('expiryYear') as string;
 
     const newItem: InventoryItem = {
-      id: editingItem?.id || Math.random().toString(36).substr(2, 9),
+      id: editingItem?.id || Math.random().toString(36).slice(2, 11),
       category,
       type: formData.get('type') as any || activeSubTab,
       model: formData.get('model') as string,
@@ -120,7 +124,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       expiry_date: expiryYear ? `${expiryYear}-12-31` : editingItem?.expiry_date,
       ammo_total: category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO ? Number(formData.get('ammoTotal')) : undefined,
       ammo_spent: editingItem?.ammo_spent || 0,
-      pericia_date: (formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO) ? formData.get('eventDate') as string : undefined,
+      pericia_date: (formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO) ? formData.get('eventDate') as string : null,
       observations: formData.get('observations') as string || undefined,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
@@ -231,9 +235,11 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
 
       <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-4">
         <div className="flex gap-2 w-full sm:w-auto">
-          <button onClick={handleOpenAdd} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-md">
-            <Plus size={18} /> Novo Registro
-          </button>
+          {isAdmin && (
+            <button onClick={handleOpenAdd} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-md">
+              <Plus size={18} /> Novo Registro
+            </button>
+          )}
           <button
             onClick={handleExportPdf}
             className="flex items-center justify-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition-colors text-slate-700 active:scale-95"
@@ -308,14 +314,14 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                           {getStatusLabel(item.status)}
                         </span>
                         {item.type === BelicoType.COLETE && item.expiry_date && (
-                          <span className={`p-1 rounded-full ${new Date(item.expiry_date).getFullYear() <= new Date().getFullYear() ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 text-slate-400'}`} title="Validade">
+                          <span className={`p-1 rounded-full ${new Date(item.expiry_date) <= new Date() ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 text-slate-400'}`} title="Validade">
                             <Clock size={10} />
                           </span>
                         )}
                       </div>
                       {(item.status === ItemStatus.PERICIA || item.status === ItemStatus.MANUTENCAO || item.status === ItemStatus.BAIXADO) && item.pericia_date && (
                         <span className="text-[9px] text-red-500 font-bold flex items-center gap-1">
-                          <Calendar size={10} /> {new Date(item.pericia_date).toLocaleDateString()}
+                          <Calendar size={10} /> {formatDateLocal(item.pericia_date)}
                         </span>
                       )}
                     </div>
@@ -346,13 +352,17 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-1">
-                    {item.type === BelicoType.MUNICAO ? (
-                      <button onClick={() => { setSelectedItem(item); setIsUseModalOpen(true); }} className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Uso"><Flame size={16} /></button>
-                    ) : item.status === ItemStatus.DISPONIVEL && (
-                      <button onClick={() => { setSelectedItem(item); setIsCautionModalOpen(true); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Acautelar"><ArrowRightLeft size={16} /></button>
+                    {isAdmin && (
+                      <>
+                        {item.type === BelicoType.MUNICAO ? (
+                          <button onClick={() => { setSelectedItem(item); setIsUseModalOpen(true); }} className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Uso"><Flame size={16} /></button>
+                        ) : item.status === ItemStatus.DISPONIVEL && (
+                          <button onClick={() => { setSelectedItem(item); setIsCautionModalOpen(true); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Acautelar"><ArrowRightLeft size={16} /></button>
+                        )}
+                        <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors" title="Editar"><Edit2 size={16} /></button>
+                        <button onClick={() => onDeleteItem(item.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors" title="Excluir"><Trash2 size={16} /></button>
+                      </>
                     )}
-                    <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors" title="Editar"><Edit2 size={16} /></button>
-                    <button onClick={() => onDeleteItem(item.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors" title="Excluir"><Trash2 size={16} /></button>
                   </div>
                 </td>
               </tr>

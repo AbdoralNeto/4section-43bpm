@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import {
   ShieldCheck,
   Users,
@@ -26,16 +26,17 @@ import { InventoryItem, Personnel, ItemCategory } from './types';
 import { AuditProvider, useAudit } from './contexts/AuditContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-const SidebarLink = ({ to, icon: Icon, label, active }: { to: string, icon: any, label: string, active: boolean }) => (
+const SidebarLink = ({ to, icon: Icon, label, active, isOpen = true }: { to: string, icon: any, label: string, active: boolean, isOpen?: boolean }) => (
   <Link
     to={to}
     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active
       ? 'bg-blue-900 text-white shadow-lg'
       : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-      }`}
+      } ${!isOpen ? 'justify-center px-2' : ''}`}
+    title={!isOpen ? label : undefined}
   >
-    <Icon size={20} />
-    <span className="font-medium">{label}</span>
+    <Icon size={20} className="shrink-0" />
+    {isOpen && <span className="font-medium truncate">{label}</span>}
   </Link>
 );
 
@@ -191,17 +192,17 @@ const AppContent = () => {
         </div>
 
         <nav className="flex-1 px-3 space-y-1 mt-4 overflow-y-auto">
-          <SidebarLink to="/" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/'} />
-          <SidebarLink to="/belico" icon={ShieldAlert} label="Mat. Bélico" active={location.pathname === '/belico'} />
-          <SidebarLink to="/viaturas" icon={Car} label="Viaturas" active={location.pathname === '/viaturas'} />
-          <SidebarLink to="/informatica" icon={Monitor} label="Informática" active={location.pathname === '/informatica'} />
-          <SidebarLink to="/mobilia" icon={ClipboardList} label="Mobília" active={location.pathname === '/mobilia'} />
-          <SidebarLink to="/efetivo" icon={Users} label="Efetivo" active={location.pathname.startsWith('/efetivo')} />
-          <SidebarLink to="/auditoria" icon={History} label="Auditória" active={location.pathname === '/auditoria'} />
+          <SidebarLink to="/" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/'} isOpen={isSidebarOpen} />
+          <SidebarLink to="/belico" icon={ShieldAlert} label="Mat. Bélico" active={location.pathname === '/belico'} isOpen={isSidebarOpen} />
+          <SidebarLink to="/viaturas" icon={Car} label="Viaturas" active={location.pathname === '/viaturas'} isOpen={isSidebarOpen} />
+          <SidebarLink to="/informatica" icon={Monitor} label="Informática" active={location.pathname === '/informatica'} isOpen={isSidebarOpen} />
+          <SidebarLink to="/mobilia" icon={ClipboardList} label="Mobília" active={location.pathname === '/mobilia'} isOpen={isSidebarOpen} />
+          <SidebarLink to="/efetivo" icon={Users} label="Efetivo" active={location.pathname.startsWith('/efetivo')} isOpen={isSidebarOpen} />
+          {session?.role === 'admin' && <SidebarLink to="/auditoria" icon={History} label="Auditória" active={location.pathname === '/auditoria'} isOpen={isSidebarOpen} />}
         </nav>
 
         <div className="p-4 border-t border-slate-800 space-y-1">
-          <SidebarLink to="/config" icon={Settings} label="Configurações" active={location.pathname === '/config'} />
+          {session?.role === 'admin' && <SidebarLink to="/config" icon={Settings} label="Configurações" active={location.pathname === '/config'} isOpen={isSidebarOpen} />}
           {isSidebarOpen && (
             <button
               onClick={logout}
@@ -221,7 +222,7 @@ const AppContent = () => {
               <Menu size={20} />
             </button>
             <h2 className="text-xl font-bold text-slate-800 capitalize tracking-tight">
-              {location.pathname === '/' ? 'Visão Geral' : location.pathname.split('/')[1].replace('-', ' ')}
+              {location.pathname === '/' ? 'Visão Geral' : location.pathname.substring(1).split('/')[0].replace('-', ' ')}
             </h2>
           </div>
 
@@ -249,8 +250,8 @@ const AppContent = () => {
             <Route path="/mobilia" element={<InventoryList category={ItemCategory.MOBILIA} inventory={inventory} personnel={personnel} onUpdateItem={handleUpdateItem} onAddItem={handleAddItem} onDeleteItem={handleDeleteItem} />} />
             <Route path="/efetivo" element={<PersonnelList personnel={personnel} inventory={inventory} onAddMember={handleAddPersonnel} onUpdateMember={handleUpdatePersonnel} onDeleteMember={handleDeletePersonnel} />} />
             <Route path="/efetivo/:personnelId/itens" element={<PersonnelItemsView inventory={inventory} personnel={personnel} />} />
-            <Route path="/auditoria" element={<AuditLogs />} />
-            <Route path="/config" element={<SettingsPage />} />
+            <Route path="/auditoria" element={session?.role === 'admin' ? <AuditLogs /> : <Navigate to="/" replace />} />
+            <Route path="/config" element={session?.role === 'admin' ? <SettingsPage /> : <Navigate to="/" replace />} />
           </Routes>
         </div>
       </main>
