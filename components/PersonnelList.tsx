@@ -20,7 +20,28 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
   const [editingMember, setEditingMember] = useState<Personnel | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredPersonnel = personnel.filter(p =>
+  const rankOrder = [
+    'Coronel',
+    'Ten-Cel',
+    'Major',
+    'Capitão',
+    'Tenente',
+    'Sub-Tenente',
+    'Sargento',
+    'Cabo',
+    'Soldado'
+  ];
+
+  const sortedPersonnel = [...personnel].sort((a, b) => {
+    const indexA = rankOrder.indexOf(a.rank);
+    const indexB = rankOrder.indexOf(b.rank);
+    // Se o posto não estiver na lista (improvável), vai para o fim
+    const valA = indexA === -1 ? 999 : indexA;
+    const valB = indexB === -1 ? 999 : indexB;
+    return valA - valB;
+  });
+
+  const filteredPersonnel = sortedPersonnel.filter(p =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.registration.includes(searchTerm)
   );

@@ -82,7 +82,7 @@ export function exportInventoryPdf(
         'Status',
         'Localização / Responsável',
         'Observações',
-        'Data Ocorrência/Cad.',
+        'Data da Ocorrência',
     ]];
 
     const body = items.map((item, idx) => {
@@ -97,8 +97,8 @@ export function exportInventoryPdf(
         else if (item.type === BelicoType.MUNICAO) idValue = `Total: ${item.ammo_total ?? 0} | Usadas: ${item.ammo_spent ?? 0}`;
         else idValue = item.serial_number ?? 'N/A';
 
-        const isSpecialStatus = [ItemStatus.BAIXADO, ItemStatus.MANUTENCAO, ItemStatus.PERICIA].includes(item.status);
-        const displayDate = isSpecialStatus && item.pericia_date ? item.pericia_date : item.acquisition_date;
+        const isSpecialStatus = [ItemStatus.BAIXADO, ItemStatus.MANUTENCAO, ItemStatus.PERICIA, ItemStatus.EXTRAVIADO].includes(item.status);
+        const displayDate = isSpecialStatus && item.pericia_date ? item.pericia_date : '';
 
         return [
             String(idx + 1).padStart(2, '0'),
@@ -107,7 +107,7 @@ export function exportInventoryPdf(
             item.status,
             locationOrPerson,
             item.observations ?? '—',
-            formatDateLocal(displayDate),
+            displayDate ? formatDateLocal(displayDate) : '—',
         ];
     });
 

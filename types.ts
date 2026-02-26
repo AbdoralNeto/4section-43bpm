@@ -18,7 +18,8 @@ export enum ItemStatus {
   PERICIA = 'Em Perícia',
   MANUTENCAO = 'Manutenção',
   BAIXADO = 'Baixado',
-  EMPRESTADO = 'Emprestado'
+  EMPRESTADO = 'Emprestado',
+  EXTRAVIADO = 'Extraviado'
 }
 
 export interface Personnel {

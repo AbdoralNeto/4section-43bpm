@@ -66,6 +66,9 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
     if (category === ItemCategory.BELICO && activeSubTab !== 'TODOS') {
       items = items.filter(item => item.type === activeSubTab);
     }
+    if (category === ItemCategory.VIATURA && activeSubTab !== 'TODOS') {
+      items = items.filter(item => item.type === activeSubTab);
+    }
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       items = items.filter(item =>
@@ -124,7 +127,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       expiry_date: expiryYear ? `${expiryYear}-12-31` : editingItem?.expiry_date,
       ammo_total: category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO ? Number(formData.get('ammoTotal')) : undefined,
       ammo_spent: editingItem?.ammo_spent || 0,
-      pericia_date: (formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO) ? formData.get('eventDate') as string : null,
+      pericia_date: (formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO || formStatus === ItemStatus.EXTRAVIADO) ? formData.get('eventDate') as string : null,
       observations: formData.get('observations') as string || undefined,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
@@ -204,24 +207,38 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       case ItemStatus.PERICIA: return 'bg-red-100 text-red-700';
       case ItemStatus.MANUTENCAO: return 'bg-amber-100 text-amber-700';
       case ItemStatus.BAIXADO: return 'bg-slate-200 text-slate-700';
+      case ItemStatus.EXTRAVIADO: return 'bg-orange-100 text-orange-700';
       default: return 'bg-slate-100 text-slate-600';
     }
   };
 
   return (
     <div className="space-y-4 animate-in fade-in duration-500">
-      {category === ItemCategory.BELICO && (
+      {(category === ItemCategory.BELICO || category === ItemCategory.VIATURA) && (
         <div className="flex p-1 bg-slate-200/50 rounded-xl w-fit">
-          {[BelicoType.ARMA, BelicoType.COLETE, BelicoType.MUNICAO].map(type => (
-            <button
-              key={type}
-              onClick={() => setActiveSubTab(type)}
-              className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white text-blue-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-            >
-              {type === BelicoType.ARMA ? <Sword size={16} /> : type === BelicoType.COLETE ? <Shield size={16} /> : <Target size={16} />}
-              {type.toUpperCase()}
-            </button>
-          ))}
+          {category === ItemCategory.BELICO ? (
+            [BelicoType.ARMA, BelicoType.COLETE, BelicoType.MUNICAO].map(type => (
+              <button
+                key={type}
+                onClick={() => setActiveSubTab(type)}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white text-blue-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                {type === BelicoType.ARMA ? <Sword size={16} /> : type === BelicoType.COLETE ? <Shield size={16} /> : <Target size={16} />}
+                {type.toUpperCase()}
+              </button>
+            ))
+          ) : (
+            ['TODOS', 'CARRO', 'MOTO'].map(type => (
+              <button
+                key={type}
+                onClick={() => setActiveSubTab(type as any)}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white text-blue-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                {type === 'CARRO' ? <Car size={16} /> : type === 'MOTO' ? <Zap size={16} /> : <Package size={16} />}
+                {type}
+              </button>
+            ))
+          )}
         </div>
       )}
 
@@ -233,25 +250,27 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-4">
-        <div className="flex gap-2 w-full sm:w-auto">
-          {isAdmin && (
-            <button onClick={handleOpenAdd} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-md">
-              <Plus size={18} /> Novo Registro
+      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-4">
+          <div className="flex gap-2 w-full sm:w-auto">
+            {isAdmin && (
+              <button onClick={handleOpenAdd} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-md">
+                <Plus size={18} /> Novo Registro
+              </button>
+            )}
+            <button
+              onClick={handleExportPdf}
+              className="flex items-center justify-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition-colors text-slate-700 active:scale-95"
+              title="Exportar inventário desta categoria em PDF"
+            >
+              <Download size={18} /> Exportar PDF
             </button>
-          )}
-          <button
-            onClick={handleExportPdf}
-            className="flex items-center justify-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition-colors text-slate-700 active:scale-95"
-            title="Exportar inventário desta categoria em PDF"
-          >
-            <Download size={18} /> Exportar PDF
-          </button>
-        </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-none">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-            <input type="text" placeholder={`Filtrar ${isITorFurniture ? 'tombo' : 'modelo'}...`} className="pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-full sm:w-64 bg-slate-50 transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+          </div>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-none">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <input type="text" placeholder={`Filtrar ${isITorFurniture ? 'tombo' : 'modelo'}...`} className="pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-full sm:w-64 bg-slate-50 transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            </div>
           </div>
         </div>
       </div>
@@ -319,7 +338,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                           </span>
                         )}
                       </div>
-                      {(item.status === ItemStatus.PERICIA || item.status === ItemStatus.MANUTENCAO || item.status === ItemStatus.BAIXADO) && item.pericia_date && (
+                      {(item.status === ItemStatus.PERICIA || item.status === ItemStatus.MANUTENCAO || item.status === ItemStatus.BAIXADO || item.status === ItemStatus.EXTRAVIADO) && item.pericia_date && (
                         <span className="text-[9px] text-red-500 font-bold flex items-center gap-1">
                           <Calendar size={10} /> {formatDateLocal(item.pericia_date)}
                         </span>
@@ -434,6 +453,9 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                   <option value={ItemStatus.ACAUTELADO}>Acautelado</option>
                   <option value={ItemStatus.MANUTENCAO}>{category === ItemCategory.VIATURA ? 'Em Manutenção' : 'Manutenção'}</option>
                   <option value={ItemStatus.BAIXADO}>{category === ItemCategory.VIATURA ? 'Baixada' : 'Baixado'}</option>
+                  {(category === ItemCategory.BELICO || category === ItemCategory.VIATURA) && (
+                    <option value={ItemStatus.EXTRAVIADO}>Extraviado</option>
+                  )}
                   {category === ItemCategory.BELICO && <option value={ItemStatus.PERICIA}>Em Perícia</option>}
                 </select>
               </div>
@@ -458,7 +480,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                 </div>
               )}
 
-              {(formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO) && (
+              {(formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO || formStatus === ItemStatus.EXTRAVIADO) && (
                 <>
                   <div className="col-span-2 space-y-2 animate-in slide-in-from-top-2 duration-300">
                     <label className="text-[10px] font-black text-red-500 uppercase tracking-widest flex items-center gap-1">
@@ -496,10 +518,28 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border overflow-hidden">
             <div className="p-6 bg-blue-900 text-white flex justify-between items-center"><h3 className="text-xl font-bold tracking-tight">Acautelar Material</h3><button onClick={() => setIsCautionModalOpen(false)}><Plus className="rotate-45" size={24} /></button></div>
             <div className="p-6 space-y-5">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                <input
+                  type="text"
+                  placeholder="Pesquisar policial..."
+                  className="w-full pl-9 pr-4 py-2 border-2 rounded-xl bg-slate-50 focus:border-blue-900 focus:outline-none text-sm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
               <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Policial Responsável</label>
               <select className="w-full p-3 border-2 rounded-xl bg-slate-50 font-bold focus:border-blue-900 focus:outline-none" value={selectedPersonnelId} onChange={(e) => setSelectedPersonnelId(e.target.value)}>
                 <option value="">Selecione...</option>
-                {personnel.filter(p => p.status === 'Ativo').map(p => (<option key={p.id} value={p.id}>{p.rank} {p.name} (Mat. {p.registration})</option>))}
+                {personnel
+                  .filter(p => p.status === 'Ativo')
+                  .filter(p =>
+                    searchTerm === '' ||
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    p.registration.includes(searchTerm) ||
+                    p.id.includes(searchTerm)
+                  )
+                  .map(p => (<option key={p.id} value={p.id}>{p.rank} {p.name} (Mat. {p.registration})</option>))}
               </select>
               <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 flex gap-3 text-[11px] text-amber-900">
                 <AlertCircle className="text-amber-600 shrink-0" size={18} /><p>Ao confirmar, você atesta que o material foi conferido e entregue em perfeitas condições.</p>

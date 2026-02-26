@@ -1,5 +1,5 @@
-
 import React, { useMemo } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { InventoryItem, Personnel, ItemCategory, ItemStatus, BelicoType } from '../types';
 import { ShieldAlert, Car, Monitor, Users, AlertTriangle, CheckCircle, Clock, Shield } from 'lucide-react';
 import {
@@ -12,18 +12,30 @@ interface DashboardProps {
   personnel: Personnel[];
 }
 
-const StatCard = ({ title, value, subtitle, icon: Icon, color }: any) => (
-  <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-start justify-between">
-    <div>
-      <p className="text-slate-500 text-sm font-medium">{title}</p>
-      <h3 className="text-3xl font-bold mt-1 text-slate-800">{value}</h3>
-      <p className="text-xs mt-2 text-slate-400 font-medium uppercase tracking-wider">{subtitle}</p>
+const StatCard = ({ title, value, subtitle, icon: Icon, color, to }: any) => {
+  const content = (
+    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-start justify-between h-full hover:border-blue-300 transition-all group">
+      <div>
+        <p className="text-slate-500 text-sm font-medium">{title}</p>
+        <h3 className="text-3xl font-bold mt-1 text-slate-800">{value}</h3>
+        <p className="text-xs mt-2 text-slate-400 font-medium uppercase tracking-wider">{subtitle}</p>
+      </div>
+      <div className={`${color} p-3 rounded-lg text-white group-hover:scale-110 transition-transform`}>
+        <Icon size={24} />
+      </div>
     </div>
-    <div className={`${color} p-3 rounded-lg text-white`}>
-      <Icon size={24} />
-    </div>
-  </div>
-);
+  );
+
+  if (to) {
+    return (
+      <Link to={to} className="block no-underline">
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
+};
 
 const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
   const belico = inventory.filter(i => i.category === ItemCategory.BELICO);
@@ -79,6 +91,7 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
           subtitle={`${stats.armasAcauteladas} Acauteladas`}
           icon={ShieldAlert}
           color="bg-blue-600"
+          to="/belico"
         />
         <StatCard
           title="Viaturas Ativas"
@@ -86,6 +99,7 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
           subtitle="Prontas para o serviço"
           icon={Car}
           color="bg-emerald-600"
+          to="/viaturas"
         />
         <StatCard
           title="Efetivo Total"
@@ -93,6 +107,7 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
           subtitle="Policiais Cadastrados"
           icon={Users}
           color="bg-indigo-600"
+          to="/efetivo"
         />
         <StatCard
           title="Manutenção/Perícia"
@@ -100,6 +115,7 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
           subtitle="Itens Indisponíveis"
           icon={AlertTriangle}
           color="bg-amber-600"
+          to="/auditoria"
         />
       </div>
 
