@@ -75,28 +75,30 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
   };
 
   return (
-    <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-5 rounded-xl border shadow-sm gap-4">
-        <div>
-          <h3 className="font-black text-slate-800 uppercase tracking-widest text-sm flex items-center gap-2">
-            <ShieldCheck className="text-blue-600" size={18} /> Controle Geral de Efetivo
-          </h3>
-          <p className="text-xs text-slate-400 font-medium">Gestão de militares ativos e custódia de carga.</p>
-        </div>
-        <div className="flex gap-2 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-none">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-            <input type="text" placeholder="Nome ou Matrícula..." className="pl-9 pr-4 py-2 border rounded-lg text-sm bg-slate-50 w-full sm:w-64 focus:ring-2 focus:ring-blue-500/20 outline-none" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+    <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500 overflow-hidden flex flex-col h-full">
+      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-5 rounded-xl border shadow-sm gap-4">
+          <div>
+            <h3 className="font-black text-slate-800 uppercase tracking-widest text-sm flex items-center gap-2">
+              <ShieldCheck className="text-blue-600" size={18} /> Controle Geral de Efetivo
+            </h3>
+            <p className="text-xs text-slate-400 font-medium">Gestão de militares ativos e custódia de carga.</p>
           </div>
-          {isAdmin && (
-            <button onClick={handleOpenAdd} className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-lg shadow-blue-900/10">
-              <UserPlus size={18} /> <span className="hidden sm:inline">Incluir Policial</span>
-            </button>
-          )}
+          <div className="flex gap-2 w-full sm:w-auto">
+            <div className="relative flex-1 sm:flex-none">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+              <input type="text" placeholder="Nome ou Matrícula..." className="pl-9 pr-4 py-2 border rounded-lg text-sm bg-slate-50 w-full sm:w-64 focus:ring-2 focus:ring-blue-500/20 outline-none" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            </div>
+            {isAdmin && (
+              <button onClick={handleOpenAdd} className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-lg shadow-blue-900/10">
+                <UserPlus size={18} /> <span className="hidden sm:inline">Incluir Policial</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-x-auto">
+      <div className="bg-white rounded-xl border shadow-sm overflow-auto flex-1 h-full min-h-0">
         <table className="w-full text-left min-w-[700px]">
           <thead className="bg-slate-50 border-b">
             <tr>

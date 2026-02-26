@@ -213,7 +213,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
   };
 
   return (
-    <div className="space-y-4 animate-in fade-in duration-500">
+    <div className="space-y-4 animate-in fade-in duration-500 overflow-hidden flex flex-col h-full">
       {(category === ItemCategory.BELICO || category === ItemCategory.VIATURA) && (
         <div className="flex p-1 bg-slate-200/50 rounded-xl w-fit">
           {category === ItemCategory.BELICO ? (
@@ -275,7 +275,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-auto flex-1 h-full min-h-0">
         <table className="w-full text-left min-w-[800px]">
           <thead className="bg-slate-50 border-b">
             <tr>
@@ -408,6 +408,13 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
 
               {category === ItemCategory.VIATURA ? (
                 <>
+                  <div className="col-span-2 space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Tipo de Viatura</label>
+                    <select name="type" required defaultValue={editingItem?.type || 'CARRO'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                      <option value="CARRO">CARRO</option>
+                      <option value="MOTO">MOTO</option>
+                    </select>
+                  </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Prefixo</label>
                     <input name="prefix" required defaultValue={editingItem?.prefix} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: VTR-1020" />
@@ -518,29 +525,26 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border overflow-hidden">
             <div className="p-6 bg-blue-900 text-white flex justify-between items-center"><h3 className="text-xl font-bold tracking-tight">Acautelar Material</h3><button onClick={() => setIsCautionModalOpen(false)}><Plus className="rotate-45" size={24} /></button></div>
             <div className="p-6 space-y-5">
+              <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Policial Responsável (Pesquise Nome ou Matrícula)</label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                 <input
-                  type="text"
-                  placeholder="Pesquisar policial..."
-                  className="w-full pl-9 pr-4 py-2 border-2 rounded-xl bg-slate-50 focus:border-blue-900 focus:outline-none text-sm"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  list="personnel-list"
+                  placeholder="Pesquise para selecionar..."
+                  className="w-full p-3 border-2 rounded-xl bg-slate-50 font-bold focus:border-blue-900 focus:outline-none"
+                  onChange={(e) => {
+                    const selected = personnel.find(p => `${p.rank} ${p.name} (Mat. ${p.registration})` === e.target.value);
+                    if (selected) setSelectedPersonnelId(selected.id);
+                  }}
                 />
+                <datalist id="personnel-list">
+                  {personnel
+                    .filter(p => p.status === 'Ativo')
+                    .map(p => (
+                      <option key={p.id} value={`${p.rank} ${p.name} (Mat. ${p.registration})`} />
+                    ))
+                  }
+                </datalist>
               </div>
-              <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Policial Responsável</label>
-              <select className="w-full p-3 border-2 rounded-xl bg-slate-50 font-bold focus:border-blue-900 focus:outline-none" value={selectedPersonnelId} onChange={(e) => setSelectedPersonnelId(e.target.value)}>
-                <option value="">Selecione...</option>
-                {personnel
-                  .filter(p => p.status === 'Ativo')
-                  .filter(p =>
-                    searchTerm === '' ||
-                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    p.registration.includes(searchTerm) ||
-                    p.id.includes(searchTerm)
-                  )
-                  .map(p => (<option key={p.id} value={p.id}>{p.rank} {p.name} (Mat. {p.registration})</option>))}
-              </select>
               <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 flex gap-3 text-[11px] text-amber-900">
                 <AlertCircle className="text-amber-600 shrink-0" size={18} /><p>Ao confirmar, você atesta que o material foi conferido e entregue em perfeitas condições.</p>
               </div>
