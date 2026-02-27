@@ -64,73 +64,125 @@ export function exportInventoryPdf(
     subType?: BelicoType | string
 ) {
     const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-    const categoryLabel = subType
-        ? `Mat. Bélico — ${subType}s`
+    const categoryLabel = subType && subType !== 'TODOS'
+        ? (category === ItemCategory.BELICO ? `Mat. Bélico — ${subType}s` : `Viatura — ${subType}s`)
         : getCategoryLabel(category);
 
     addHeader(doc, `Relatório de Inventário — ${categoryLabel}`);
 
     const isVehicle = category === ItemCategory.VIATURA;
     const isITFurniture = category === ItemCategory.INFORMATICA || category === ItemCategory.MOBILIA;
+    const isVest = subType === BelicoType.COLETE;
 
     const idCol = isVehicle ? 'Prefixo / Placa' : isITFurniture ? 'Tombo (Patrimônio)' : 'Nº de Série';
 
-    const head = [[
-        '#',
-        'Descrição / Modelo',
-        idCol,
-        'Status',
-        'Localização / Responsável',
-        'Observações',
-        'Data da Ocorrência',
-    ]];
+    const renderTable = (tableItems: InventoryItem[], tableTitle?: string, startY: number = 38) => {
+        if (tableTitle) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            doc.setTextColor(10, 28, 70);
+            doc.text(tableTitle, 14, startY - 2);
+        }
 
-    const body = items.map((item, idx) => {
-        const responsible = personnel.find(p => p.id === item.responsible_id);
-        const locationOrPerson = responsible
-            ? `${responsible.rank} ${responsible.name}`
-            : item.location;
+        const head = [[
+            '#',
+            'Descrição / Modelo',
+            idCol,
+            'Status',
+            'Localização / Responsável',
+            'Observações',
+            isVest ? 'Validade' : 'Data da Ocorrência',
+        ]];
 
-        let idValue = '';
-        if (isVehicle) idValue = `${item.prefix ?? ''} / ${item.plate ?? ''}`;
-        else if (isITFurniture) idValue = item.patrimony ?? 'S/T';
-        else if (item.type === BelicoType.MUNICAO) idValue = `Total: ${item.ammo_total ?? 0} | Usadas: ${item.ammo_spent ?? 0}`;
-        else idValue = item.serial_number ?? 'N/A';
+        const body = tableItems.map((item, idx) => {
+            const responsible = personnel.find(p => p.id === item.responsible_id);
+            const locationOrPerson = responsible
+                ? `${responsible.rank} ${responsible.name}`
+                : item.location;
 
-        const isSpecialStatus = [ItemStatus.BAIXADO, ItemStatus.MANUTENCAO, ItemStatus.PERICIA, ItemStatus.EXTRAVIADO].includes(item.status);
-        const displayDate = isSpecialStatus && item.pericia_date ? item.pericia_date : '';
+            let idValue = '';
+            if (isVehicle) idValue = `${item.prefix ?? ''} / ${item.plate ?? ''}`;
+            else if (isITFurniture) idValue = item.patrimony ?? 'S/T';
+            else if (item.type === BelicoType.MUNICAO) idValue = `Total: ${item.ammo_total ?? 0} | Usadas: ${item.ammo_spent ?? 0}`;
+            else idValue = item.serial_number ?? 'N/A';
 
-        return [
-            String(idx + 1).padStart(2, '0'),
-            item.model.toUpperCase(),
-            idValue,
-            item.status,
-            locationOrPerson,
-            item.observations ?? '—',
-            displayDate ? formatDateLocal(displayDate) : '—',
-        ];
-    });
+            const isSpecialStatus = [ItemStatus.BAIXADO, ItemStatus.MANUTENCAO, ItemStatus.PERICIA, ItemStatus.EXTRAVIADO].includes(item.status);
 
-    autoTable(doc, {
-        startY: 38,
-        head,
-        body,
-        headStyles: {
-            fillColor: [10, 28, 70],
-            textColor: 255,
-            fontStyle: 'bold',
-            fontSize: 8,
-        },
-        bodyStyles: { fontSize: 7.5, textColor: [30, 30, 30] },
-        alternateRowStyles: { fillColor: [245, 247, 250] },
-        styles: { cellPadding: 2.5, overflow: 'linebreak' },
-        columnStyles: {
-            0: { cellWidth: 10, halign: 'center' },
-            3: { cellWidth: 30 },
-            6: { cellWidth: 26 },
-        },
-        margin: { left: 14, right: 14 },
-    });
+            let dateValue = '—';
+            if (isVest && item.expiry_date) {
+                dateValue = formatDateLocal(item.expiry_date);
+            } else if (isSpecialStatus && item.pericia_date) {
+                dateValue = formatDateLocal(item.pericia_date);
+            }
+
+            return [
+                String(idx + 1).padStart(2, '0'),
+                item.model.toUpperCase(),
+                idValue,
+                item.status,
+                locationOrPerson,
+                item.observations ?? '—',
+                dateValue,
+            ];
+        });
+
+        autoTable(doc, {
+            startY,
+            head,
+            body,
+            headStyles: {
+                fillColor: [10, 28, 70],
+                textColor: 255,
+                fontStyle: 'bold',
+                fontSize: 8,
+            },
+            bodyStyles: { fontSize: 7.5, textColor: [30, 30, 30] },
+            alternateRowStyles: { fillColor: [245, 247, 250] },
+            styles: { cellPadding: 2.5, overflow: 'linebreak' },
+            columnStyles: {
+                0: { cellWidth: 10, halign: 'center' },
+                3: { cellWidth: 30 },
+                6: { cellWidth: 26 },
+            },
+            margin: { left: 14, right: 14 },
+        });
+
+        return (doc as any).lastAutoTable.finalY;
+    };
+
+    let currentY = 38;
+
+    if (isVest) {
+        const today = new Date();
+        const sixMonthsLater = new Date();
+        sixMonthsLater.setMonth(today.getMonth() + 6);
+
+        const expired = items.filter(i => i.expiry_date && new Date(i.expiry_date) < today);
+        const expiring = items.filter(i => i.expiry_date && new Date(i.expiry_date) >= today && new Date(i.expiry_date) <= sixMonthsLater);
+        const ready = items.filter(i => !i.expiry_date || new Date(i.expiry_date) > sixMonthsLater);
+
+        if (expired.length > 0) {
+            currentY = renderTable(expired, 'COLETES VENCIDOS', currentY) + 12;
+        }
+        if (expiring.length > 0) {
+            currentY = renderTable(expiring, 'COLETES VENCENDO (PRÓXIMOS 6 MESES)', currentY) + 12;
+        }
+        if (ready.length > 0) {
+            currentY = renderTable(ready, 'COLETES PRONTOS PARA USO', currentY) + 12;
+        }
+    } else if (isVehicle && subType === 'TODOS') {
+        const cars = items.filter(i => i.type === 'CARRO');
+        const motos = items.filter(i => i.type === 'MOTO');
+
+        if (cars.length > 0) {
+            currentY = renderTable(cars, 'VEÍCULOS: CARROS', currentY) + 12;
+        }
+        if (motos.length > 0) {
+            currentY = renderTable(motos, 'VEÍCULOS: MOTOS', currentY) + 12;
+        }
+    } else {
+        currentY = renderTable(items, undefined, currentY) + 12;
+    }
 
     // Resumo de totais por status
     const statusCount: Record<string, number> = {};
@@ -138,7 +190,7 @@ export function exportInventoryPdf(
         statusCount[i.status] = (statusCount[i.status] ?? 0) + 1;
     });
 
-    const finalY = (doc as any).lastAutoTable.finalY + 6;
+    const finalY = currentY - 6;
     doc.setFontSize(8);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(10, 28, 70);
@@ -155,7 +207,7 @@ export function exportInventoryPdf(
 
     addFooter(doc);
 
-    const fileSuffix = subType ? `Belico_${subType}` : category;
+    const fileSuffix = subType ? `_${subType}` : category;
     doc.save(`P4_43BPM_${fileSuffix}_${new Date().toISOString().slice(0, 10)}.pdf`);
 }
 
