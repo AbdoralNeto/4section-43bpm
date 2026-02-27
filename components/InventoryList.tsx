@@ -176,12 +176,15 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
   };
 
   const handleExportPdf = () => {
-    if (category === ItemCategory.BELICO) {
-      // Para Bélico: exporta apenas os itens do sub-tipo ativo
-      const subItems = inventory.filter(
-        item => item.category === category && item.type === activeSubTab
-      );
-      exportInventoryPdf(subItems, category, personnel, activeSubTab as string);
+    if (category === ItemCategory.BELICO || category === ItemCategory.VIATURA) {
+      // Para Bélico ou Viatura: exporta considerando o sub-tipo ativo (filtro)
+      let itemsToExport = inventory.filter(item => item.category === category);
+
+      if (activeSubTab !== 'TODOS') {
+        itemsToExport = itemsToExport.filter(item => item.type === activeSubTab);
+      }
+
+      exportInventoryPdf(itemsToExport, category, personnel, activeSubTab as string);
     } else {
       const itemsToExport = inventory.filter(item => item.category === category);
       exportInventoryPdf(itemsToExport, category, personnel);
