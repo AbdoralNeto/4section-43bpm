@@ -151,7 +151,7 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
           <ShieldCheck className="text-blue-900 shrink-0" size={24} />
           <div>
             <p className="text-sm font-bold text-blue-900">Termo de Responsabilidade Ativo</p>
-            <p className="text-xs text-blue-700">O militar acima é o fiel depositário da carga listada. Qualquer alteração no estado dos itens deve ser reportada imediatamente à P4.</p>
+            <p className="text-xs text-blue-700">O militar acima é o fiel depositário da carga listada. Qualquer alteração no estado dos itens deve ser reportada imediatamente ao P4.</p>
           </div>
         </div>
       </div>

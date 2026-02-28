@@ -149,7 +149,8 @@ const Login: React.FC = () => {
                 </div>
 
                 <p className="text-center text-slate-600 text-[10px] font-bold uppercase tracking-widest mt-8">
-                    Uso exclusivo de militares autorizados • 43º BPM
+                    Uso exclusivo de militares autorizados • 43º BPM  <br />
+                    • Desenvolvido pelo SD Boaventura •
                 </p>
             </div>
         </div>
