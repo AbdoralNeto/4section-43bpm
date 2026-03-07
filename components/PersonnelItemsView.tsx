@@ -63,7 +63,13 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-2xl font-black text-slate-800 tracking-tight uppercase">{officer.rank} {officer.name}</h3>
-                <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase">Ativo</span>
+                <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${officer.status === 'Ativo' ? 'bg-emerald-100 text-emerald-700' :
+                    officer.status === 'Férias' ? 'bg-blue-100 text-blue-700' :
+                      officer.status === 'LP' ? 'bg-amber-100 text-amber-700' :
+                        'bg-red-100 text-red-700'
+                  }`}>
+                  {officer.status || 'Ativo'}
+                </span>
               </div>
               <p className="text-slate-500 font-mono text-sm mt-1">Matrícula: <span className="font-bold">{officer.registration}</span> | Função: {officer.function}</p>
             </div>
@@ -122,7 +128,7 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2 text-slate-600">
                       <Calendar size={14} className="opacity-40" />
-                      <span className="text-sm font-medium">{formatDateLocal(item.acquisition_date)}</span>
+                      <span className="text-sm font-medium">{formatDateLocal(item.caution_date || item.acquisition_date)}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">

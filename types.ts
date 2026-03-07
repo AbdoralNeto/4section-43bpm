@@ -50,6 +50,7 @@ export interface InventoryItem {
   prefix?: string;
   plate?: string;
   origin?: 'PMMA' | 'LOCADA';
+  caution_date?: string;
   // Campos específicos para Munição
   ammo_total?: number;
   ammo_spent?: number;

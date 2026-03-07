@@ -131,7 +131,29 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       observations: formData.get('observations') as string || undefined,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
+      caution_date: editingItem?.caution_date
     };
+
+    // Verificar duplicidade
+    const isDuplicate = inventory.some(item => {
+      if (item.id === newItem.id) return false;
+
+      // Checar Serial Number (exceto N/A)
+      if (newItem.serial_number !== 'N/A' && item.serial_number === newItem.serial_number) return true;
+
+      // Checar Placa
+      if (newItem.plate && item.plate === newItem.plate) return true;
+
+      // Checar Patrimônio
+      if (newItem.patrimony && item.patrimony === newItem.patrimony) return true;
+
+      return false;
+    });
+
+    if (isDuplicate) {
+      alert('Este item (Série/Placa/Patrimônio) já está cadastrado no sistema!');
+      return;
+    }
 
     if (editingItem) {
       onUpdateItem(newItem);
@@ -145,7 +167,12 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
   const handleAcautelar = () => {
     if (selectedItem && selectedPersonnelId) {
       const responsible = personnel.find(p => p.id === selectedPersonnelId);
-      const updatedItem = { ...selectedItem, status: ItemStatus.ACAUTELADO, responsible_id: selectedPersonnelId };
+      const updatedItem = {
+        ...selectedItem,
+        status: ItemStatus.ACAUTELADO,
+        responsible_id: selectedPersonnelId,
+        caution_date: new Date().toISOString()
+      };
       onUpdateItem(updatedItem);
       addAuditLog({
         action: 'Acautelamento',

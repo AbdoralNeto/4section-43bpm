@@ -59,11 +59,20 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const registration = formData.get('registration') as string;
+
+    // Verificar duplicidade de matrícula
+    const isDuplicate = personnel.some(p => p.registration === registration && p.id !== editingMember?.id);
+    if (isDuplicate) {
+      alert(`Policial com matrícula ${registration} já está cadastrado!`);
+      return;
+    }
+
     const member: Personnel = {
       id: editingMember?.id || Math.random().toString(36).slice(2, 11),
       rank: formData.get('rank') as string,
       name: formData.get('name') as string,
-      registration: formData.get('registration') as string,
+      registration: registration,
       function: formData.get('function') as string,
       status: formData.get('status') as any || 'Ativo'
     };
@@ -177,6 +186,15 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
               <div className="col-span-2 space-y-2">
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Função Prevista</label>
                 <input name="function" required defaultValue={editingMember?.function} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50" placeholder="Ex: Motorista Operacional" />
+              </div>
+              <div className="col-span-2 space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Situação / Status</label>
+                <select name="status" required defaultValue={editingMember?.status || 'Ativo'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                  <option value="Ativo">ATIVO</option>
+                  <option value="Férias">FÉRIAS</option>
+                  <option value="LP">LP</option>
+                  <option value="JMS">JMS</option>
+                </select>
               </div>
             </div>
             <div className="p-6 bg-slate-50 border-t flex gap-3">
