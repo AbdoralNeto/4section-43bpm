@@ -97,8 +97,13 @@ const AppContent = () => {
   };
 
   const handleDeleteItem = async (id: string) => {
+    const item = inventory.find(i => i.id === id);
+    if (item?.status === 'Acautelado' || item?.responsible_id) {
+      alert('Este item está acautelado e não pode ser excluído!');
+      return;
+    }
+
     if (confirm('Tem certeza que deseja excluir este item da carga?')) {
-      const item = inventory.find(i => i.id === id);
       const { error } = await supabase.from('inventory').delete().eq('id', id);
 
       if (!error) {
