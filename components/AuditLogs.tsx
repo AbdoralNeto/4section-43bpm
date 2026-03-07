@@ -211,7 +211,17 @@ const AuditLogs: React.FC = () => {
                           {new Date(log.timestamp).toLocaleString('pt-BR')}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">{log.details}</p>
+                      <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
+                        {log.details.split('|').map((part, i) => (
+                          <span key={i} className={i > 0 ? 'border-l pl-2 ml-2 border-slate-200' : ''}>
+                            {part.trim().split(':').map((sub, j) => (
+                              <span key={j} className={j === 0 ? 'text-[10px] font-black text-slate-400 uppercase' : 'text-slate-700 font-bold'}>
+                                {sub}{j === 0 && part.includes(':') ? ': ' : ''}
+                              </span>
+                            ))}
+                          </span>
+                        ))}
+                      </p>
                       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-50">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">
                           Responsável pelo registro: <span className="text-blue-900">{log.user}</span>

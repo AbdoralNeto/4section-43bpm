@@ -67,11 +67,14 @@ const AppContent = () => {
 
     if (data && !error) {
       setInventory(prev => [...prev, data]);
+      const identification = data.serial_number && data.serial_number !== 'N/A' ? ` | S/N: ${data.serial_number}` :
+        data.plate ? ` | Placa: ${data.plate}` :
+          data.patrimony ? ` | Tombo: ${data.patrimony}` : '';
       addAuditLog({
         action: 'Cadastro de Item',
         entity_type: 'item',
         entity_id: data.id,
-        details: `Novo item cadastrado: "${data.model.toUpperCase()}" | Categoria: ${data.category} | Status: ${data.status} | Local: ${data.location}`,
+        details: `Novo item cadastrado: "${data.model.toUpperCase()}"${identification} | Categoria: ${data.category} | Status: ${data.status} | Local: ${data.location}`,
       });
     } else {
       console.error('Erro ao adicionar item:', error);
@@ -84,11 +87,14 @@ const AppContent = () => {
 
     if (!error) {
       setInventory(prev => prev.map(item => item.id === updatedItem.id ? updatedItem : item));
+      const identification = updatedItem.serial_number && updatedItem.serial_number !== 'N/A' ? ` | S/N: ${updatedItem.serial_number}` :
+        updatedItem.plate ? ` | Placa: ${updatedItem.plate}` :
+          updatedItem.patrimony ? ` | Tombo: ${updatedItem.patrimony}` : '';
       addAuditLog({
         action: 'Edição de Item',
         entity_type: 'item',
         entity_id: updatedItem.id,
-        details: `Item editado: "${updatedItem.model.toUpperCase()}" | Status: ${updatedItem.status}${updatedItem.responsible_id ? ' | Acautelado' : ''}`,
+        details: `Item editado: "${updatedItem.model.toUpperCase()}"${identification} | Status: ${updatedItem.status}${updatedItem.responsible_id ? ' | Acautelado' : ''}`,
       });
     } else {
       console.error('Erro ao atualizar item:', error);
@@ -109,11 +115,14 @@ const AppContent = () => {
       if (!error) {
         setInventory(prev => prev.filter(item => item.id !== id));
         if (item) {
+          const identification = item.serial_number && item.serial_number !== 'N/A' ? ` | S/N: ${item.serial_number}` :
+            item.plate ? ` | Placa: ${item.plate}` :
+              item.patrimony ? ` | Tombo: ${item.patrimony}` : '';
           addAuditLog({
             action: 'Exclusão de Item',
             entity_type: 'item',
             entity_id: id,
-            details: `Item excluído do sistema: "${item.model.toUpperCase()}" | Cat.: ${item.category}`,
+            details: `Item excluído do sistema: "${item.model.toUpperCase()}"${identification} | Cat.: ${item.category}`,
           });
         }
       } else {
@@ -151,7 +160,7 @@ const AppContent = () => {
         action: 'Edição de Policial',
         entity_type: 'personnel',
         entity_id: updatedMember.id,
-        details: `Cadastro atualizado: ${updatedMember.rank} ${updatedMember.name} | Mat.: ${updatedMember.registration} | Status: ${updatedMember.status}`,
+        details: `Cadastro atualizado: ${updatedMember.rank} ${updatedMember.name} | Mat.: ${updatedMember.registration} | Status: ${updatedMember.status} | Func.: ${updatedMember.function}`,
       });
     } else {
       console.error('Erro ao atualizar policial:', error);

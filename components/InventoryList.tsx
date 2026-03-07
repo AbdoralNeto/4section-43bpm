@@ -174,11 +174,14 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
         caution_date: new Date().toISOString()
       };
       onUpdateItem(updatedItem);
+      const identification = selectedItem.serial_number && selectedItem.serial_number !== 'N/A' ? ` (S/N: ${selectedItem.serial_number})` :
+        selectedItem.plate ? ` (Placa: ${selectedItem.plate})` :
+          selectedItem.patrimony ? ` (Tombo: ${selectedItem.patrimony})` : '';
       addAuditLog({
         action: 'Acautelamento',
         entity_type: 'movement',
         entity_id: selectedItem.id,
-        details: `Material "${selectedItem.model.toUpperCase()}" acautelado para ${responsible?.rank} ${responsible?.name} (Mat. ${responsible?.registration})`,
+        details: `Material "${selectedItem.model.toUpperCase()}"${identification} acautelado para ${responsible?.rank} ${responsible?.name} (Mat. ${responsible?.registration})`,
       });
       setIsCautionModalOpen(false);
       setSelectedItem(null);
@@ -194,7 +197,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
         action: 'Uso de Munição',
         entity_type: 'movement',
         entity_id: selectedItem.id,
-        details: `Baixa de munição no lote "${selectedItem.model}": ${useQuantity} unidades deflagradas. Total acumulado: ${updatedItem.ammo_spent} | Disponível: ${(updatedItem.ammo_total || 0) - updatedItem.ammo_spent}`,
+        details: `Baixa de munição no lote "${selectedItem.model}" (S/N: ${selectedItem.serial_number}): ${useQuantity} unidades deflagradas. Total acumulado: ${updatedItem.ammo_spent} | Disponível: ${(updatedItem.ammo_total || 0) - updatedItem.ammo_spent}`,
       });
       setIsUseModalOpen(false);
       setSelectedItem(null);

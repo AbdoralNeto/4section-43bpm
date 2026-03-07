@@ -220,11 +220,11 @@ export function exportAuditPdf(logs: AuditLog[]) {
 
     const body = logs.map((log, idx) => [
         String(idx + 1).padStart(3, '0'),
-        log.timestamp,
+        new Date(log.timestamp).toLocaleString('pt-BR'),
         log.action,
-        log.entity_type === 'item' ? 'Item de Carga'
-            : log.entity_type === 'personnel' ? 'Policial / Efetivo'
-                : 'Movimentação',
+        log.entity_type === 'item' ? 'Item'
+            : log.entity_type === 'personnel' ? 'Policial'
+                : 'Mov.',
         log.user,
         log.details,
     ]);
@@ -239,16 +239,17 @@ export function exportAuditPdf(logs: AuditLog[]) {
             fontStyle: 'bold',
             fontSize: 8,
         },
-        bodyStyles: { fontSize: 7.5, textColor: [30, 30, 30] },
+        bodyStyles: { fontSize: 7, textColor: [30, 30, 30] },
         alternateRowStyles: { fillColor: [245, 247, 250] },
-        styles: { cellPadding: 2.5, overflow: 'linebreak' },
+        styles: { cellPadding: 2, overflow: 'linebreak' },
         columnStyles: {
-            0: { cellWidth: 10, halign: 'center' },
-            1: { cellWidth: 32 },
-            2: { cellWidth: 36 },
-            3: { cellWidth: 26 },
+            0: { cellWidth: 8, halign: 'center' },
+            1: { cellWidth: 28 },
+            2: { cellWidth: 30 },
+            3: { cellWidth: 15 },
+            4: { cellWidth: 25 },
         },
-        margin: { left: 14, right: 14 },
+        margin: { left: 10, right: 10 },
     });
 
     const finalY = (doc as any).lastAutoTable.finalY + 8;
