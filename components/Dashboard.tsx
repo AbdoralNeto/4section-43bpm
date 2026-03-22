@@ -42,6 +42,26 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
   const armas = belico.filter(i => i.type === BelicoType.ARMA);
   const coletes = belico.filter(i => i.type === BelicoType.COLETE);
 
+  // Lógica de Troca de Óleo
+  const oleoAlert = useMemo(() => {
+    const viaturas = inventory.filter(i => i.category === ItemCategory.VIATURA && i.status === ItemStatus.DISPONIVEL);
+    const alertas: InventoryItem[] = [];
+
+    viaturas.forEach(v => {
+      const currentKm = v.km || 0;
+      const lastOilKm = v.last_oil_change_km || 0;
+      const diff = currentKm - lastOilKm;
+
+      if (v.type === 'CARRO' && diff >= 9500) {
+        alertas.push(v);
+      } else if (v.type === 'MOTO' && diff >= 900) {
+        alertas.push(v);
+      }
+    });
+
+    return alertas;
+  }, [inventory]);
+
   // Lógica de Vencimento de Coletes
   const coletesAlert = useMemo(() => {
     const now = new Date();
@@ -180,6 +200,19 @@ const Dashboard: React.FC<DashboardProps> = ({ inventory, personnel }) => {
                 <div className="flex-1">
                   <p className="text-sm font-black text-amber-800 uppercase tracking-tight">Vencimento Próximo (12 meses)</p>
                   <p className="text-xs text-amber-700 font-medium">Há {coletesAlert.nearExpiry.length} colete(s) que vencem em menos de um ano.</p>
+                </div>
+              </div>
+            )}
+
+            {/* Alerta de Troca de Óleo */}
+            {oleoAlert.length > 0 && (
+              <div className="flex items-center gap-4 p-4 bg-orange-50 border border-orange-100 rounded-lg border-l-4 border-l-orange-500">
+                <div className="bg-orange-100 p-2 rounded-full text-orange-600">
+                  <Car size={20} />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-black text-orange-800 uppercase tracking-tight">Troca de Óleo Próxima/Vencida</p>
+                  <p className="text-xs text-orange-700 font-medium">Há {oleoAlert.length} viatura(s) precisando de troca de óleo.</p>
                 </div>
               </div>
             )}

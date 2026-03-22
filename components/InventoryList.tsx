@@ -131,9 +131,20 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       observations: formData.get('observations') as string || undefined,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
+      km: category === ItemCategory.VIATURA ? Number(formData.get('km')) : undefined,
+      last_oil_change_km: category === ItemCategory.VIATURA ? Number(formData.get('last_oil_change_km')) : undefined,
     };
 
     if (editingItem) {
+      if ((editingItem.status === ItemStatus.BAIXADO || editingItem.status === ItemStatus.MANUTENCAO) && formStatus === ItemStatus.DISPONIVEL) {
+        addAuditLog({
+          action: 'Edição de Item',
+          entity_type: 'item',
+          entity_id: newItem.id,
+          details: `Viatura retornou a operação. Histórico de observações: ${editingItem.observations || 'Nenhuma'}`,
+        });
+        newItem.observations = undefined;
+      }
       onUpdateItem(newItem);
     } else {
       onAddItem(newItem);
@@ -308,6 +319,9 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                       {item.category === ItemCategory.VIATURA && (
                         <p className="text-[10px] text-blue-600 font-bold uppercase">{item.prefix} • {item.plate}</p>
                       )}
+                      {item.category === ItemCategory.VIATURA && item.km !== undefined && (
+                        <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">{item.km.toLocaleString('pt-BR')} KM</p>
+                      )}
                       {!isITorFurniture && item.category !== ItemCategory.VIATURA && (
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">{item.type || 'Material'}</p>
                       )}
@@ -418,6 +432,14 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Placa</label>
                     <input name="plate" required defaultValue={editingItem?.plate} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: PM-9922" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Quilometragem Atual (KM)</label>
+                    <input name="km" type="number" min="0" required defaultValue={editingItem?.km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: 15600" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Última Troca de Óleo (KM)</label>
+                    <input name="last_oil_change_km" type="number" min="0" required defaultValue={editingItem?.last_oil_change_km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: 10000" />
                   </div>
                 </>
               ) : isITorFurniture ? (
