@@ -131,6 +131,8 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       observations: formData.get('observations') as string || undefined,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
+      km: category === ItemCategory.VIATURA ? Number(formData.get('km')) : undefined,
+      last_oil_change_km: category === ItemCategory.VIATURA ? Number(formData.get('last_oil_change_km')) : undefined,
     };
 
     if (editingItem) {
