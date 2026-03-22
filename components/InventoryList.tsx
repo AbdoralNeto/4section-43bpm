@@ -327,7 +327,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                       {item.category === ItemCategory.VIATURA && (
                         <p className="text-[10px] text-blue-600 font-bold uppercase">{item.prefix} • {item.plate}</p>
                       )}
-                      {item.category === ItemCategory.VIATURA && item.km !== undefined && (
+                      {item.category === ItemCategory.VIATURA && typeof item.km === 'number' && (
                         <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">{item.km.toLocaleString('pt-BR')} KM</p>
                       )}
                       {!isITorFurniture && item.category !== ItemCategory.VIATURA && (
