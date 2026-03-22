@@ -47,6 +47,7 @@ export interface InventoryItem {
   observations?: string;
   pericia_date?: string;
   km?: number;
+  last_oil_change_km?: number;
   prefix?: string;
   plate?: string;
   origin?: 'PMMA' | 'LOCADA';
