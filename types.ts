@@ -44,7 +44,7 @@ export interface InventoryItem {
   status: ItemStatus;
   location: string;
   responsible_id?: string; // Personnel ID
-  observations?: string;
+  observations?: string | null;
   pericia_date?: string;
   km?: number;
   last_oil_change_km?: number;

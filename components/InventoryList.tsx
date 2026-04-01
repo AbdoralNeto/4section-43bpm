@@ -128,7 +128,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       ammo_total: category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO ? Number(formData.get('ammoTotal')) : undefined,
       ammo_spent: editingItem?.ammo_spent || 0,
       pericia_date: (formStatus === ItemStatus.PERICIA || formStatus === ItemStatus.MANUTENCAO || formStatus === ItemStatus.BAIXADO || formStatus === ItemStatus.EXTRAVIADO) ? formData.get('eventDate') as string : null,
-      observations: formData.get('observations') as string || undefined,
+      observations: formData.get('observations') as string || null,
       plate: formData.get('plate') as string,
       prefix: formData.get('prefix') as string,
       km: category === ItemCategory.VIATURA ? Number(formData.get('km')) : undefined,
@@ -143,7 +143,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
           entity_id: newItem.id,
           details: `Viatura retornou a operação. Histórico de observações: ${editingItem.observations || 'Nenhuma'}`,
         });
-        newItem.observations = undefined;
+        newItem.observations = null;
       }
       onUpdateItem(newItem);
     } else {

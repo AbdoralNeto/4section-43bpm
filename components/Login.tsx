@@ -79,7 +79,7 @@ const Login: React.FC = () => {
                                     type="text"
                                     value={militaryId}
                                     onChange={e => setMilitaryId(e.target.value)}
-                                    placeholder="Ex: ADM-00001"
+                                    placeholder="Ex: 12345678"
                                     required
                                     autoComplete="username"
                                     disabled={isLocked || isLoading}
