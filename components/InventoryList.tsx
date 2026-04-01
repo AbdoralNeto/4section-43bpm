@@ -328,7 +328,34 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                         <p className="text-[10px] text-blue-600 font-bold uppercase">{item.prefix} • {item.plate}</p>
                       )}
                       {item.category === ItemCategory.VIATURA && typeof item.km === 'number' && (
-                        <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">{item.km.toLocaleString('pt-BR')} KM</p>
+                        <div className="flex flex-col gap-1 mt-0.5">
+                          <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">
+                            {item.km.toLocaleString('pt-BR')} KM
+                          </p>
+                          {(() => {
+                            if (typeof item.last_oil_change_km === 'number' && (item.type === 'CARRO' || item.type === 'MOTO')) {
+                              const interval = item.type === 'CARRO' ? 10000 : 1000;
+                              const threshold = item.type === 'CARRO' ? 1000 : 100;
+                              const kmSince = item.km - item.last_oil_change_km;
+                              const kmRem = interval - kmSince;
+                              if (kmRem <= 0) {
+                                return (
+                                  <span className="text-[9px] flex items-center gap-1 text-red-600 font-black uppercase tracking-tighter bg-red-50 px-1.5 py-0.5 rounded-md border border-red-100 w-fit" title={`Atrasado em ${Math.abs(kmRem).toLocaleString('pt-BR')} KM`}>
+                                    <AlertCircle size={10} /> Trocar Óleo
+                                  </span>
+                                );
+                              }
+                              if (kmRem <= threshold) {
+                                return (
+                                  <span className="text-[9px] flex items-center gap-1 text-amber-600 font-black uppercase tracking-tighter bg-amber-50 px-1.5 py-0.5 rounded-md border border-amber-100 w-fit" title={`Troca próxima: ${kmRem.toLocaleString('pt-BR')} KM restantes`}>
+                                    <Wrench size={10} /> Troca em {kmRem.toLocaleString('pt-BR')} KM
+                                  </span>
+                                );
+                              }
+                            }
+                            return null;
+                          })()}
+                        </div>
                       )}
                       {!isITorFurniture && item.category !== ItemCategory.VIATURA && (
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">{item.type || 'Material'}</p>
