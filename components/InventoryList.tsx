@@ -113,6 +113,32 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
     const formData = new FormData(e.currentTarget);
     const expiryYear = formData.get('expiryYear') as string;
 
+    const submittedPlate = formData.get('plate') as string;
+    const submittedPrefix = formData.get('prefix') as string;
+    const submittedPatrimony = formData.get('patrimony') as string;
+    const submittedSerialNumber = formData.get('serialNumber') as string;
+
+    const isDuplicate = inventory.some(item => {
+      if (editingItem && item.id === editingItem.id) return false;
+
+      if (category === ItemCategory.VIATURA) {
+        return (submittedPlate && item.plate === submittedPlate) || 
+               (submittedPrefix && item.prefix === submittedPrefix);
+      }
+      if (category === ItemCategory.INFORMATICA || category === ItemCategory.MOBILIA) {
+        return submittedPatrimony && item.patrimony === submittedPatrimony;
+      }
+      if (category === ItemCategory.BELICO) {
+        return submittedSerialNumber && submittedSerialNumber !== 'N/A' && item.serial_number === submittedSerialNumber;
+      }
+      return false;
+    });
+
+    if (isDuplicate) {
+      alert('Já existe um item cadastrado com esta identificação (Série, Placa, Prefixo ou Tombo)!');
+      return;
+    }
+
     const newItem: InventoryItem = {
       id: editingItem?.id || Math.random().toString(36).slice(2, 11),
       category,
