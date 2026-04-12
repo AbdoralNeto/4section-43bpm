@@ -74,7 +74,7 @@ const Login: React.FC = () => {
                                 ID Militar / Matrícula
                             </label>
                             <div className="relative">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" size={16} />
                                 <input
                                     type="text"
                                     value={militaryId}
@@ -94,7 +94,7 @@ const Login: React.FC = () => {
                                 Senha
                             </label>
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" size={16} />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
@@ -108,7 +108,7 @@ const Login: React.FC = () => {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(v => !v)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 hover:text-slate-300 transition-colors"
                                     tabIndex={-1}
                                 >
                                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -148,9 +148,9 @@ const Login: React.FC = () => {
                     </form>
                 </div>
 
-                <p className="text-center text-slate-600 text-[10px] font-bold uppercase tracking-widest mt-8">
+                <p className="text-center text-slate-600 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-8">
                     Uso exclusivo de militares autorizados • 43º BPM  <br />
-                    • Desenvolvido pelo SD Boaventura •
+                    • Desenvolvido pelo CB Boaventura •
                 </p>
             </div>
         </div>

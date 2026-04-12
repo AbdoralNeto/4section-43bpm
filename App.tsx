@@ -12,7 +12,9 @@ import {
   Settings,
   Menu,
   History,
-  LogOut
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import InventoryList from './components/InventoryList';
@@ -25,13 +27,14 @@ import { supabase } from './lib/supabase';
 import { InventoryItem, Personnel, ItemCategory } from './types';
 import { AuditProvider, useAudit } from './contexts/AuditContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
 const SidebarLink = ({ to, icon: Icon, label, active, isOpen = true }: { to: string, icon: any, label: string, active: boolean, isOpen?: boolean }) => (
   <Link
     to={to}
     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${active
-      ? 'bg-blue-900 text-white shadow-lg'
-      : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+      ? 'bg-blue-900 text-white shadow-lg dark:bg-blue-800'
+      : 'text-slate-400 hover:bg-slate-800 hover:text-white dark:hover:bg-slate-800'
       } ${!isOpen ? 'justify-center px-2' : ''}`}
     title={!isOpen ? label : undefined}
   >
@@ -47,6 +50,7 @@ const AppContent = () => {
   const location = useLocation();
   const { addAuditLog } = useAudit();
   const { session, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -196,8 +200,8 @@ const AppContent = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden text-slate-900">
-      <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-slate-950 transition-all duration-300 flex flex-col border-r border-slate-800`}>
+    <div className="flex h-screen bg-slate-50 dark:bg-slate-950 overflow-hidden text-slate-900 dark:text-slate-200 transition-colors duration-200">
+      <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-slate-950 dark:bg-slate-900 transition-all duration-300 flex flex-col border-r border-slate-800`}>
         <div className="p-6 flex items-center gap-3">
           <div className="bg-blue-600 p-2 rounded-lg shrink-0">
             <ShieldCheck className="text-white" size={24} />
@@ -230,24 +234,31 @@ const AppContent = () => {
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="h-16 bg-white border-b flex items-center justify-between px-8 shrink-0">
+        <header className="h-16 bg-white dark:bg-slate-950 border-b dark:border-slate-800 flex items-center justify-between px-8 shrink-0 transition-colors duration-200">
           <div className="flex items-center gap-4">
-            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-100 rounded-md transition-colors">
-              <Menu size={20} />
+            <button onClick={() => setSidebarOpen(!isSidebarOpen)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors">
+              <Menu size={20} className="text-slate-700 dark:text-slate-300" />
             </button>
-            <h2 className="text-xl font-bold text-slate-800 capitalize tracking-tight">
+            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 capitalize tracking-tight">
               {location.pathname === '/' ? 'Visão Geral' : location.pathname.substring(1).split('/')[0].replace('-', ' ')}
             </h2>
           </div>
 
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3 border-l pl-6">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300"
+              title={theme === 'dark' ? 'Mudar para modo claro' : 'Mudar para modo escuro'}
+            >
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <div className="flex items-center gap-3 border-l pl-6 dark:border-slate-800">
               <div className="w-9 h-9 rounded-full bg-blue-900 flex items-center justify-center font-bold text-white text-xs">
                 {session?.name?.split(' ').slice(0, 2).map(n => n[0]).join('') ?? 'PM'}
               </div>
               <div className="hidden sm:block">
-                <p className="text-xs font-bold">{session?.rank} {session?.name}</p>
-                <p className="text-[10px] text-slate-500 uppercase font-black">
+                <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{session?.rank} {session?.name}</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-black">
                   {session?.role === 'admin' ? 'Administrador' : 'Operador'} — 43º BPM
                 </p>
               </div>
@@ -255,7 +266,7 @@ const AppContent = () => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 lg:p-10 bg-slate-50">
+        <div className="flex-1 overflow-y-auto p-6 lg:p-10 bg-slate-50 dark:bg-slate-900 transition-colors duration-200">
           <Routes>
             <Route path="/" element={<Dashboard inventory={inventory} personnel={personnel} />} />
             <Route path="/belico" element={<InventoryList category={ItemCategory.BELICO} inventory={inventory} personnel={personnel} onUpdateItem={handleUpdateItem} onAddItem={handleAddItem} onDeleteItem={handleDeleteItem} />} />
@@ -287,10 +298,13 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <AuditProvider>
-          <AuthGate />
-        </AuditProvider>
+        <ThemeProvider>
+          <AuditProvider>
+            <AuthGate />
+          </AuditProvider>
+        </ThemeProvider>
       </AuthProvider>
     </Router>
   );
 }
+

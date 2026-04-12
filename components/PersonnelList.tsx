@@ -85,10 +85,10 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
 
   return (
     <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500 overflow-hidden flex flex-col h-full">
-      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
-        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-5 rounded-xl border shadow-sm gap-4">
+      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-slate-900 p-5 rounded-xl border dark:border-slate-700 shadow-sm gap-4">
           <div>
-            <h3 className="font-black text-slate-800 uppercase tracking-widest text-sm flex items-center gap-2">
+            <h3 className="font-black text-slate-800 dark:text-slate-200 uppercase tracking-widest text-sm flex items-center gap-2">
               <ShieldCheck className="text-blue-600" size={18} /> Controle Geral de Efetivo
             </h3>
             <p className="text-xs text-slate-400 font-medium">Gestão de militares ativos e custódia de carga.</p>
@@ -96,7 +96,7 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
           <div className="flex gap-2 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-              <input type="text" placeholder="Nome ou Matrícula..." className="pl-9 pr-4 py-2 border rounded-lg text-sm bg-slate-50 w-full sm:w-64 focus:ring-2 focus:ring-blue-500/20 outline-none" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+              <input type="text" placeholder="Nome ou Matrícula..." className="pl-9 pr-4 py-2 border dark:border-slate-700 rounded-lg text-sm bg-slate-50 dark:bg-slate-950 w-full sm:w-64 focus:ring-2 focus:ring-blue-500/20 outline-none" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
             </div>
             {isAdmin && (
               <button onClick={handleOpenAdd} className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-lg shadow-blue-900/10">
@@ -107,9 +107,9 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-auto flex-1 h-full min-h-0">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-700 shadow-sm overflow-auto flex-1 h-full min-h-0">
         <table className="w-full text-left min-w-[700px]">
-          <thead className="bg-slate-50 border-b">
+          <thead className="bg-slate-50 dark:bg-slate-950 border-b dark:border-slate-700">
             <tr>
               <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Posto/Grad</th>
               <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Nome Completo</th>
@@ -124,11 +124,11 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
               const items = inventory.filter(i => i.responsible_id === p.id);
               const itemTotal = items.length;
               return (
-                <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-slate-700 text-sm">{p.rank}</td>
-                  <td className="px-6 py-4 font-bold text-slate-800 text-sm uppercase">{p.name}</td>
-                  <td className="px-6 py-4 font-mono font-medium text-slate-500 text-sm">{p.registration}</td>
-                  <td className="px-6 py-4 text-xs font-medium text-slate-600">{p.function}</td>
+                <tr key={p.id} className="hover:bg-slate-50 dark:bg-slate-950/50 transition-colors">
+                  <td className="px-6 py-4 font-bold text-slate-700 dark:text-slate-300 text-sm">{p.rank}</td>
+                  <td className="px-6 py-4 font-bold text-slate-800 dark:text-slate-200 text-sm uppercase">{p.name}</td>
+                  <td className="px-6 py-4 font-mono font-medium text-slate-500 dark:text-slate-400 text-sm">{p.registration}</td>
+                  <td className="px-6 py-4 text-xs font-medium text-slate-600 dark:text-slate-400">{p.function}</td>
                   <td className="px-6 py-4">
                     {itemTotal > 0 ? (
                       <Link
@@ -139,7 +139,7 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
                         <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                       </Link>
                     ) : (
-                      <span className="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-tight">
+                      <span className="px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-400 text-[10px] font-black uppercase tracking-tight">
                         SEM CARGA
                       </span>
                     )}
@@ -148,7 +148,7 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
                     <div className="flex justify-end gap-1">
                       {isAdmin && (
                         <>
-                          <button onClick={() => handleOpenEdit(p)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors"><Edit2 size={16} /></button>
+                          <button onClick={() => handleOpenEdit(p)} className="p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors"><Edit2 size={16} /></button>
                           <button onClick={() => onDeleteMember(p.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={16} /></button>
                         </>
                       )}
@@ -163,33 +163,33 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <form onSubmit={handleSave} className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border">
+          <form onSubmit={handleSave} className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border dark:border-slate-700">
             <div className="p-6 bg-blue-900 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold tracking-tight">{editingMember ? 'Editar Cadastro' : 'Novo Policial'}</h3>
-              <button type="button" onClick={() => setIsModalOpen(false)} className="hover:bg-white/10 p-2 rounded-lg transition-colors"><Plus className="rotate-45" size={24} /></button>
+              <button type="button" onClick={() => setIsModalOpen(false)} className="hover:bg-white dark:bg-slate-900/10 p-2 rounded-lg transition-colors"><Plus className="rotate-45" size={24} /></button>
             </div>
             <div className="p-6 grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Posto / Graduação</label>
-                <select name="rank" required defaultValue={editingMember?.rank} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Posto / Graduação</label>
+                <select name="rank" required defaultValue={editingMember?.rank} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold">
                   <option>Coronel</option><option>Ten-Cel</option><option>Major</option><option>Capitão</option><option>Tenente</option><option>Sub-Tenente</option><option>Sargento</option><option>Cabo</option><option>Soldado</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Matrícula</label>
-                <input name="registration" required defaultValue={editingMember?.registration} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-mono" placeholder="000.000-0" />
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Matrícula</label>
+                <input name="registration" required defaultValue={editingMember?.registration} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-mono" placeholder="000.000-0" />
               </div>
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Nome de Guerra / Completo</label>
-                <input name="name" required defaultValue={editingMember?.name} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold uppercase" placeholder="Ex: SILVA JÚNIOR" />
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Nome de Guerra / Completo</label>
+                <input name="name" required defaultValue={editingMember?.name} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold uppercase" placeholder="Ex: SILVA JÚNIOR" />
               </div>
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Função Prevista</label>
-                <input name="function" required defaultValue={editingMember?.function} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50" placeholder="Ex: Motorista Operacional" />
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Função Prevista</label>
+                <input name="function" required defaultValue={editingMember?.function} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950" placeholder="Ex: Motorista Operacional" />
               </div>
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Situação / Status</label>
-                <select name="status" required defaultValue={editingMember?.status || 'Ativo'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Situação / Status</label>
+                <select name="status" required defaultValue={editingMember?.status || 'Ativo'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold">
                   <option value="Ativo">ATIVO</option>
                   <option value="Férias">FÉRIAS</option>
                   <option value="LP">LP</option>
@@ -197,8 +197,8 @@ const PersonnelList: React.FC<PersonnelListProps> = ({ personnel, inventory, onA
                 </select>
               </div>
             </div>
-            <div className="p-6 bg-slate-50 border-t flex gap-3">
-              <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 hover:text-slate-700 transition-colors">DESCARTAR</button>
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
+              <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300 transition-colors">DESCARTAR</button>
               <button type="submit" className="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold shadow-lg hover:bg-blue-950 transition-all active:scale-95">CONFIRMAR CADASTRO</button>
             </div>
           </form>

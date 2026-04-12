@@ -17,7 +17,7 @@ const ROLE_LABELS: Record<UserRole, string> = {
 
 const ROLE_COLORS: Record<UserRole, string> = {
     admin: 'bg-blue-100 text-blue-800',
-    operador: 'bg-slate-100 text-slate-700',
+    operador: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
 };
 
 // ─── Password strength bar ───────────────────────────────────────────────────
@@ -57,7 +57,7 @@ function FeedbackMsg({ msg, type }: { msg: string; type: 'error' | 'success' }) 
         : 'bg-emerald-50 border-emerald-200 text-emerald-700';
     const Icon = type === 'error' ? AlertCircle : CheckCircle2;
     return (
-        <div className={`flex items-start gap-2 border rounded-xl px-4 py-3 text-sm font-medium animate-in slide-in-from-top-1 duration-200 ${styles}`}>
+        <div className={`flex items-start gap-2 border dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium animate-in slide-in-from-top-1 duration-200 ${styles}`}>
             <Icon size={15} className="shrink-0 mt-0.5" />
             <span>{msg}</span>
         </div>
@@ -108,14 +108,14 @@ const UserModal: React.FC<UserModalProps> = ({ mode, target, onClose }) => {
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <form
                 onSubmit={handleSubmit}
-                className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border"
+                className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border dark:border-slate-700"
             >
                 <div className="p-6 bg-blue-900 text-white flex justify-between items-center">
                     <h3 className="text-lg font-bold tracking-tight flex items-center gap-2">
                         {mode === 'add' ? <UserPlus size={20} /> : <Edit2 size={20} />}
                         {mode === 'add' ? 'Cadastrar Novo Usuário' : 'Editar Usuário'}
                     </h3>
-                    <button type="button" onClick={onClose} className="hover:bg-white/10 p-2 rounded-lg">
+                    <button type="button" onClick={onClose} className="hover:bg-white dark:bg-slate-900/10 p-2 rounded-lg">
                         <Plus className="rotate-45" size={20} />
                     </button>
                 </div>
@@ -125,27 +125,27 @@ const UserModal: React.FC<UserModalProps> = ({ mode, target, onClose }) => {
 
                     {mode === 'add' && (
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">ID Militar / Matrícula *</label>
+                            <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">ID Militar / Matrícula *</label>
                             <input
                                 required value={militaryId} onChange={e => setMilitaryId(e.target.value)}
                                 placeholder="Ex: SGT-12345"
-                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-mono font-bold uppercase"
+                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-mono font-bold uppercase"
                             />
                         </div>
                     )}
 
                     <div className="grid grid-cols-2 gap-3">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Posto / Grad.</label>
+                            <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Posto / Grad.</label>
                             <select required value={rank} onChange={e => setRank(e.target.value)}
-                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold">
                                 {RANKS.map(r => <option key={r}>{r}</option>)}
                             </select>
                         </div>
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Perfil de Acesso</label>
+                            <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Perfil de Acesso</label>
                             <select value={role} onChange={e => setRole(e.target.value as UserRole)}
-                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                                className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold">
                                 <option value="operador">Operador</option>
                                 <option value="admin">Administrador</option>
                             </select>
@@ -153,23 +153,23 @@ const UserModal: React.FC<UserModalProps> = ({ mode, target, onClose }) => {
                     </div>
 
                     <div className="space-y-1.5">
-                        <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Nome Completo / Guerra *</label>
+                        <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Nome Completo / Guerra *</label>
                         <input
                             required value={name} onChange={e => setName(e.target.value)}
                             placeholder="Ex: SILVA JUNIOR"
-                            className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold uppercase"
+                            className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold uppercase"
                         />
                     </div>
 
                     {mode === 'add' && (
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Senha Inicial *</label>
+                            <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Senha Inicial *</label>
                             <div className="relative">
                                 <input
                                     type={showPw ? 'text' : 'password'}
                                     required value={password} onChange={e => setPassword(e.target.value)}
                                     placeholder="Mín. 8 caracteres"
-                                    className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 pr-12"
+                                    className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 pr-12"
                                 />
                                 <button type="button" onClick={() => setShowPw(v => !v)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -184,9 +184,9 @@ const UserModal: React.FC<UserModalProps> = ({ mode, target, onClose }) => {
                     )}
                 </div>
 
-                <div className="p-5 bg-slate-50 border-t flex gap-3">
+                <div className="p-5 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
                     <button type="button" onClick={onClose}
-                        className="flex-1 py-3 font-bold text-slate-500 hover:text-slate-700">CANCELAR</button>
+                        className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300">CANCELAR</button>
                     <button type="submit" disabled={loading}
                         className="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold hover:bg-blue-950 active:scale-95 disabled:bg-slate-300 transition-all">
                         {loading ? 'Salvando...' : mode === 'add' ? 'CADASTRAR' : 'SALVAR'}
@@ -225,24 +225,24 @@ const ResetPasswordModal: React.FC<{ target: SystemUser; onClose: () => void }> 
 
     return (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border">
+            <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden border dark:border-slate-700">
                 <div className="p-6 bg-slate-800 text-white flex justify-between items-center">
                     <h3 className="text-lg font-bold flex items-center gap-2"><Key size={18} /> Redefinir Senha</h3>
-                    <button type="button" onClick={onClose} className="hover:bg-white/10 p-1 rounded-lg"><Plus className="rotate-45" size={20} /></button>
+                    <button type="button" onClick={onClose} className="hover:bg-white dark:bg-slate-900/10 p-1 rounded-lg"><Plus className="rotate-45" size={20} /></button>
                 </div>
                 <div className="p-6 space-y-4">
                     {feedback && <FeedbackMsg {...feedback} />}
-                    <div className="bg-slate-50 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-600">
+                    <div className="bg-slate-50 dark:bg-slate-950 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-600 dark:text-slate-400">
                         {target.rank} {target.name} — {target.military_id}
                     </div>
                     {['Nova Senha', 'Confirmar Nova Senha'].map((label, i) => (
                         <div key={i} className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{label}</label>
+                            <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">{label}</label>
                             <div className="relative">
                                 <input type={showPw ? 'text' : 'password'} required
                                     value={i === 0 ? newPw : confirmPw}
                                     onChange={e => i === 0 ? setNewPw(e.target.value) : setConfirmPw(e.target.value)}
-                                    className="w-full p-3 border-2 rounded-xl focus:border-slate-800 focus:outline-none bg-slate-50 pr-10" />
+                                    className="w-full p-3 border-2 rounded-xl focus:border-slate-800 focus:outline-none bg-slate-50 dark:bg-slate-950 pr-10" />
                                 {i === 0 && (
                                     <button type="button" onClick={() => setShowPw(v => !v)}
                                         className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -254,8 +254,8 @@ const ResetPasswordModal: React.FC<{ target: SystemUser; onClose: () => void }> 
                         </div>
                     ))}
                 </div>
-                <div className="p-5 bg-slate-50 border-t flex gap-3">
-                    <button type="button" onClick={onClose} className="flex-1 py-3 font-bold text-slate-500">CANCELAR</button>
+                <div className="p-5 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
+                    <button type="button" onClick={onClose} className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400">CANCELAR</button>
                     <button type="submit" disabled={loading}
                         className="flex-1 py-3 bg-slate-800 text-white rounded-xl font-bold disabled:bg-slate-300 hover:bg-slate-900 transition-all">
                         {loading ? 'Salvando...' : 'REDEFINIR'}
@@ -295,13 +295,13 @@ const Settings: React.FC = () => {
     return (
         <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
             {/* Header */}
-            <div className="bg-white p-6 rounded-2xl border shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border dark:border-slate-700 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <div className="bg-slate-900 p-3 rounded-2xl text-white shadow-lg">
                         <SettingsIcon size={26} />
                     </div>
                     <div>
-                        <h3 className="text-xl font-black text-slate-800 tracking-tight">Configurações do Sistema</h3>
+                        <h3 className="text-xl font-black text-slate-800 dark:text-slate-200 tracking-tight">Configurações do Sistema</h3>
                         <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">Gerenciamento de Acesso e Usuários</p>
                     </div>
                 </div>
@@ -314,8 +314,8 @@ const Settings: React.FC = () => {
             </div>
 
             {/* Session info */}
-            <div className="bg-white p-5 rounded-2xl border shadow-sm">
-                <h4 className="font-black text-slate-600 text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border dark:border-slate-700 shadow-sm">
+                <h4 className="font-black text-slate-600 dark:text-slate-400 text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
                     <Lock size={14} /> Sessão Ativa
                 </h4>
                 <div className="flex flex-wrap gap-4 text-sm">
@@ -331,9 +331,9 @@ const Settings: React.FC = () => {
 
             {/* Users panel (admin only) */}
             {isAdmin ? (
-                <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b bg-slate-50 flex items-center justify-between">
-                        <h4 className="font-black text-slate-800 text-sm uppercase tracking-widest flex items-center gap-2">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-950 flex items-center justify-between">
+                        <h4 className="font-black text-slate-800 dark:text-slate-200 text-sm uppercase tracking-widest flex items-center gap-2">
                             <Users size={16} /> Usuários Autorizados ({users.length})
                         </h4>
                         <button
@@ -352,14 +352,14 @@ const Settings: React.FC = () => {
 
                     <div className="divide-y divide-slate-100">
                         {users.map(user => (
-                            <div key={user.id} className={`px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors ${user.active ? 'hover:bg-slate-50/50' : 'bg-slate-50 opacity-60'}`}>
+                            <div key={user.id} className={`px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-colors ${user.active ? 'hover:bg-slate-50 dark:bg-slate-950/50' : 'bg-slate-50 dark:bg-slate-950 opacity-60'}`}>
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${user.role === 'admin' ? 'bg-blue-900 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${user.role === 'admin' ? 'bg-blue-900 text-white' : 'bg-slate-200 text-slate-600 dark:text-slate-400'}`}>
                                         {user.role === 'admin' ? <ShieldCheck size={18} /> : <Users size={16} />}
                                     </div>
                                     <div>
                                         <div className="flex items-center gap-2 flex-wrap">
-                                            <p className="font-bold text-slate-800 text-sm uppercase">{user.rank} {user.name}</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200 text-sm uppercase">{user.rank} {user.name}</p>
                                             <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded ${ROLE_COLORS[user.role]}`}>
                                                 {ROLE_LABELS[user.role]}
                                             </span>
@@ -367,15 +367,15 @@ const Settings: React.FC = () => {
                                                 <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded bg-red-100 text-red-700">Inativo</span>
                                             )}
                                         </div>
-                                        <p className="text-xs text-slate-500 font-mono mt-0.5">{user.military_id}</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">{user.military_id}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <button onClick={() => handleToggleActive(user)} title={user.active ? 'Desativar' : 'Ativar'}
-                                        className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700">
+                                        className="p-2 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition-colors text-slate-400 hover:text-slate-700 dark:text-slate-300">
                                         {user.active ? <ToggleRight size={18} className="text-emerald-500" /> : <ToggleLeft size={18} />}
                                     </button>
-                                    <button onClick={() => setModal({ type: 'edit', user })} title="Editar" className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400">
+                                    <button onClick={() => setModal({ type: 'edit', user })} title="Editar" className="p-2 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition-colors text-slate-400">
                                         <Edit2 size={15} />
                                     </button>
                                     <button onClick={() => setModal({ type: 'resetPw', user })} title="Redefinir senha" className="p-2 rounded-lg hover:bg-amber-50 transition-colors text-amber-500">
@@ -392,9 +392,9 @@ const Settings: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className="bg-white p-8 rounded-2xl border shadow-sm text-center">
+                <div className="bg-white dark:bg-slate-900 p-8 rounded-2xl border dark:border-slate-700 shadow-sm text-center">
                     <Lock size={32} className="text-slate-300 mx-auto mb-3" />
-                    <p className="font-black text-slate-500 uppercase tracking-widest text-sm">Acesso Restrito</p>
+                    <p className="font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest text-sm">Acesso Restrito</p>
                     <p className="text-xs text-slate-400 mt-1">O gerenciamento de usuários é exclusivo para administradores.</p>
                 </div>
             )}

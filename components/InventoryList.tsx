@@ -254,9 +254,9 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       case ItemStatus.ACAUTELADO: return 'bg-blue-100 text-blue-700';
       case ItemStatus.PERICIA: return 'bg-red-100 text-red-700';
       case ItemStatus.MANUTENCAO: return 'bg-amber-100 text-amber-700';
-      case ItemStatus.BAIXADO: return 'bg-slate-200 text-slate-700';
+      case ItemStatus.BAIXADO: return 'bg-slate-200 text-slate-700 dark:text-slate-300';
       case ItemStatus.EXTRAVIADO: return 'bg-orange-100 text-orange-700';
-      default: return 'bg-slate-100 text-slate-600';
+      default: return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
     }
   };
 
@@ -269,7 +269,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
               <button
                 key={type}
                 onClick={() => setActiveSubTab(type)}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white text-blue-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white dark:bg-slate-900 text-blue-900 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'}`}
               >
                 {type === BelicoType.ARMA ? <Sword size={16} /> : type === BelicoType.COLETE ? <Shield size={16} /> : <Target size={16} />}
                 {type.toUpperCase()}
@@ -280,7 +280,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
               <button
                 key={type}
                 onClick={() => setActiveSubTab(type as any)}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white text-blue-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeSubTab === type ? 'bg-white dark:bg-slate-900 text-blue-900 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300'}`}
               >
                 {type === 'CARRO' ? <Car size={16} /> : type === 'MOTO' ? <Zap size={16} /> : <Package size={16} />}
                 {type}
@@ -298,8 +298,8 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
         </div>
       )}
 
-      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
-        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm gap-4">
+      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md pt-2 pb-4 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm gap-4">
           <div className="flex gap-2 w-full sm:w-auto">
             {isAdmin && (
               <button onClick={handleOpenAdd} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-lg font-bold hover:bg-blue-950 transition-all active:scale-95 shadow-md">
@@ -308,7 +308,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
             )}
             <button
               onClick={handleExportPdf}
-              className="flex items-center justify-center gap-2 border border-slate-200 px-5 py-2.5 rounded-lg font-bold hover:bg-slate-50 transition-colors text-slate-700 active:scale-95"
+              className="flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 px-5 py-2.5 rounded-lg font-bold hover:bg-slate-50 dark:bg-slate-950 transition-colors text-slate-700 dark:text-slate-300 active:scale-95"
               title="Exportar inventário desta categoria em PDF"
             >
               <Download size={18} /> Exportar PDF
@@ -317,15 +317,15 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <div className="relative flex-1 sm:flex-none">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-              <input type="text" placeholder={`Filtrar ${isITorFurniture ? 'tombo' : 'modelo'}...`} className="pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-full sm:w-64 bg-slate-50 transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+              <input type="text" placeholder={`Filtrar ${isITorFurniture ? 'tombo' : 'modelo'}...`} className="pl-9 pr-4 py-2.5 border dark:border-slate-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-full sm:w-64 bg-slate-50 dark:bg-slate-950 transition-all" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-auto flex-1 h-full min-h-0">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-auto flex-1 h-full min-h-0">
         <table className="w-full text-left min-w-[800px]">
-          <thead className="bg-slate-50 border-b">
+          <thead className="bg-slate-50 dark:bg-slate-950 border-b dark:border-slate-700">
             <tr>
               <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Item / Identificação</th>
               <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -338,10 +338,10 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
           </thead>
           <tbody className="divide-y divide-slate-100">
             {filteredItems.map(item => (
-              <tr key={item.id} className="hover:bg-slate-50/50 transition-colors">
+              <tr key={item.id} className="hover:bg-slate-50 dark:bg-slate-950/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-slate-100 rounded-lg text-slate-500">
+                    <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400">
                       {item.category === ItemCategory.VIATURA ? <Car size={16} /> :
                         item.category === ItemCategory.INFORMATICA ? <Monitor size={16} /> :
                           item.category === ItemCategory.MOBILIA ? <Package size={16} /> :
@@ -349,13 +349,13 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                               item.type === BelicoType.COLETE ? <Shield size={16} /> : <Target size={16} />}
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800 uppercase text-sm">{item.model}</p>
+                      <p className="font-bold text-slate-800 dark:text-slate-200 uppercase text-sm">{item.model}</p>
                       {item.category === ItemCategory.VIATURA && (
                         <p className="text-[10px] text-blue-600 font-bold uppercase">{item.prefix} • {item.plate}</p>
                       )}
                       {item.category === ItemCategory.VIATURA && typeof item.km === 'number' && (
                         <div className="flex flex-col gap-1 mt-0.5">
-                          <p className="text-[9px] text-slate-500 font-bold uppercase tracking-tighter">
+                          <p className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tighter">
                             {item.km.toLocaleString('pt-BR')} KM
                           </p>
                           {(() => {
@@ -389,21 +389,21 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 font-mono font-bold text-slate-600 text-sm">
+                <td className="px-6 py-4 font-mono font-bold text-slate-600 dark:text-slate-400 text-sm">
                   {item.category === ItemCategory.VIATURA ? (
                     <div className="space-y-0.5">
                       <span className="block">{item.prefix || '---'}</span>
                       <span className="block text-[10px] opacity-70">{item.plate || '---'}</span>
                     </div>
                   ) : isITorFurniture ? (
-                    <span className="bg-slate-100 px-2 py-1 rounded text-blue-800">#{item.patrimony || 'S/T'}</span>
+                    <span className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded text-blue-800">#{item.patrimony || 'S/T'}</span>
                   ) : (
                     `#${item.serial_number}`
                   )}
                 </td>
                 <td className="px-6 py-4">
                   {item.type === BelicoType.MUNICAO && item.ammo_total ? (
-                    <div className="w-40"><div className="flex justify-between text-[9px] font-black mb-1 text-slate-500 uppercase"><span>{(item.ammo_total - (item.ammo_spent || 0))} Prontas</span></div><div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden flex"><div className="bg-emerald-500 h-full" style={{ width: `${((item.ammo_total - (item.ammo_spent || 0)) / item.ammo_total) * 100}%` }} /><div className="bg-slate-400 h-full" style={{ width: `${((item.ammo_spent || 0) / item.ammo_total) * 100}%` }} /></div></div>
+                    <div className="w-40"><div className="flex justify-between text-[9px] font-black mb-1 text-slate-500 dark:text-slate-400 uppercase"><span>{(item.ammo_total - (item.ammo_spent || 0))} Prontas</span></div><div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden flex"><div className="bg-emerald-500 h-full" style={{ width: `${((item.ammo_total - (item.ammo_spent || 0)) / item.ammo_total) * 100}%` }} /><div className="bg-slate-400 h-full" style={{ width: `${((item.ammo_spent || 0) / item.ammo_total) * 100}%` }} /></div></div>
                   ) : (
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-2">
@@ -411,7 +411,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                           {getStatusLabel(item.status)}
                         </span>
                         {item.type === BelicoType.COLETE && item.expiry_date && (
-                          <span className={`p-1 rounded-full ${new Date(item.expiry_date) <= new Date() ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 text-slate-400'}`} title="Validade">
+                          <span className={`p-1 rounded-full ${new Date(item.expiry_date) <= new Date() ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`} title="Validade">
                             <Clock size={10} />
                           </span>
                         )}
@@ -440,7 +440,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                         <MapPin size={10} /> {item.location}
                       </span>
                       {item.observations && (
-                        <span className="text-[9px] text-slate-500 italic truncate max-w-[150px]" title={item.observations}>
+                        <span className="text-[9px] text-slate-500 dark:text-slate-400 italic truncate max-w-[150px]" title={item.observations}>
                           Obs: {item.observations}
                         </span>
                       )}
@@ -456,7 +456,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                         ) : item.status === ItemStatus.DISPONIVEL && (
                           <button onClick={() => { setSelectedItem(item); setIsCautionModalOpen(true); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Acautelar"><ArrowRightLeft size={16} /></button>
                         )}
-                        <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-lg transition-colors" title="Editar"><Edit2 size={16} /></button>
+                        <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors" title="Editar"><Edit2 size={16} /></button>
                         <button onClick={() => onDeleteItem(item.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors" title="Excluir"><Trash2 size={16} /></button>
                       </>
                     )}
@@ -471,74 +471,74 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       {/* Modal de Cadastro/Edição de Item */}
       {isFormModalOpen && (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <form onSubmit={handleSaveItem} className="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border">
+          <form onSubmit={handleSaveItem} className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border dark:border-slate-700">
             <div className="p-6 bg-blue-900 text-white flex justify-between items-center">
               <h3 className="text-xl font-bold tracking-tight">{editingItem ? 'Editar Registro' : 'Novo Registro de Carga'}</h3>
-              <button type="button" onClick={() => setIsFormModalOpen(false)} className="hover:bg-white/10 p-2 rounded-lg transition-colors"><Plus className="rotate-45" size={24} /></button>
+              <button type="button" onClick={() => setIsFormModalOpen(false)} className="hover:bg-white dark:bg-slate-900/10 p-2 rounded-lg transition-colors"><Plus className="rotate-45" size={24} /></button>
             </div>
             <div className="p-6 grid grid-cols-2 gap-4 max-h-[70vh] overflow-y-auto">
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                   {isITorFurniture ? 'Descrição do Item' : 'Modelo / Descrição'}
                 </label>
-                <input name="model" required defaultValue={editingItem?.model} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold uppercase" placeholder={category === ItemCategory.VIATURA ? "Ex: TOYOTA HILUX 4X4" : category === ItemCategory.BELICO ? "Ex: PISTOLA GLOCK G22 GEN5" : "Ex: Computador All-in-one Dell"} />
+                <input name="model" required defaultValue={editingItem?.model} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold uppercase" placeholder={category === ItemCategory.VIATURA ? "Ex: TOYOTA HILUX 4X4" : category === ItemCategory.BELICO ? "Ex: PISTOLA GLOCK G22 GEN5" : "Ex: Computador All-in-one Dell"} />
               </div>
 
               {category === ItemCategory.VIATURA ? (
                 <>
                   <div className="col-span-2 space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Tipo de Viatura</label>
-                    <select name="type" required defaultValue={editingItem?.type || 'CARRO'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold">
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Tipo de Viatura</label>
+                    <select name="type" required defaultValue={editingItem?.type || 'CARRO'} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold">
                       <option value="CARRO">CARRO</option>
                       <option value="MOTO">MOTO</option>
                     </select>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Prefixo</label>
-                    <input name="prefix" required defaultValue={editingItem?.prefix} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: VTR-1020" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Prefixo</label>
+                    <input name="prefix" required defaultValue={editingItem?.prefix} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold" placeholder="Ex: VTR-1020" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Placa</label>
-                    <input name="plate" required defaultValue={editingItem?.plate} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: PM-9922" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Placa</label>
+                    <input name="plate" required defaultValue={editingItem?.plate} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold" placeholder="Ex: PM-9922" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Quilometragem Atual (KM)</label>
-                    <input name="km" type="number" min="0" required defaultValue={editingItem?.km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: 15600" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Quilometragem Atual (KM)</label>
+                    <input name="km" type="number" min="0" required defaultValue={editingItem?.km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold" placeholder="Ex: 15600" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Última Troca de Óleo (KM)</label>
-                    <input name="last_oil_change_km" type="number" min="0" required defaultValue={editingItem?.last_oil_change_km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: 10000" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Última Troca de Óleo (KM)</label>
+                    <input name="last_oil_change_km" type="number" min="0" required defaultValue={editingItem?.last_oil_change_km} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold" placeholder="Ex: 10000" />
                   </div>
                 </>
               ) : isITorFurniture ? (
                 <div className="col-span-2 space-y-2">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Número do Tombo (Patrimônio)</label>
-                  <input name="patrimony" required defaultValue={editingItem?.patrimony} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-mono font-bold" placeholder="Ex: 881122" />
+                  <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Número do Tombo (Patrimônio)</label>
+                  <input name="patrimony" required defaultValue={editingItem?.patrimony} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-mono font-bold" placeholder="Ex: 881122" />
                 </div>
               ) : (
                 <div className="col-span-2 grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Número de Série</label>
-                    <input name="serialNumber" defaultValue={editingItem?.serial_number} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-mono" placeholder="Ex: ABC12345" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Número de Série</label>
+                    <input name="serialNumber" defaultValue={editingItem?.serial_number} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-mono" placeholder="Ex: ABC12345" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Calibre / Medida</label>
-                    <input name="caliber" defaultValue={editingItem?.caliber} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50" placeholder="Ex: 9mm" />
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Calibre / Medida</label>
+                    <input name="caliber" defaultValue={editingItem?.caliber} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950" placeholder="Ex: 9mm" />
                   </div>
                 </div>
               )}
 
               {category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO && (
                 <div className="col-span-2 space-y-2">
-                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Quantidade Total do Lote</label>
-                  <input name="ammoTotal" type="number" min="0" required defaultValue={editingItem?.ammo_total} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold" placeholder="Ex: 500" />
+                  <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Quantidade Total do Lote</label>
+                  <input name="ammoTotal" type="number" min="0" required defaultValue={editingItem?.ammo_total} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold" placeholder="Ex: 500" />
                 </div>
               )}
 
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Status Atual</label>
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Status Atual</label>
                 <select
-                  className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-bold"
+                  className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-bold"
                   value={formStatus}
                   onChange={(e) => setFormStatus(e.target.value as ItemStatus)}
                 >
@@ -566,7 +566,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                     max="2050"
                     required
                     defaultValue={editingItem?.expiry_date ? new Date(editingItem.expiry_date).getFullYear() : ''}
-                    className="w-full p-3 border-2 border-amber-200 rounded-xl focus:border-amber-500 focus:outline-none bg-white font-bold"
+                    className="w-full p-3 border-2 border-amber-200 rounded-xl focus:border-amber-500 focus:outline-none bg-white dark:bg-slate-900 font-bold"
                     placeholder="Ex: 2028"
                   />
                   <p className="text-[9px] text-amber-500 font-medium">A data será definida como 31/12 do ano informado para fins de alerta.</p>
@@ -582,23 +582,23 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                     <input name="eventDate" type="date" required defaultValue={editingItem?.pericia_date} className="w-full p-3 border-2 border-red-100 rounded-xl focus:border-red-500 focus:outline-none bg-red-50/30 font-medium" />
                   </div>
                   <div className="col-span-2 space-y-2 animate-in slide-in-from-top-2 duration-300">
-                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-1">
                       <AlertCircle size={12} /> Descrição da Situação / Observações
                     </label>
-                    <textarea name="observations" defaultValue={editingItem?.observations} required className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 text-sm h-20" placeholder="Descreva o motivo da manutenção, defeito ou detalhes da baixa..." />
+                    <textarea name="observations" defaultValue={editingItem?.observations} required className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 text-sm h-20" placeholder="Descreva o motivo da manutenção, defeito ou detalhes da baixa..." />
                   </div>
                 </>
               )}
 
               <div className="col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                   {isITorFurniture ? 'Local de Destino / Instalação' : 'Localização / Pátio'}
                 </label>
-                <input name="location" required defaultValue={editingItem?.location} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 font-medium" placeholder="Ex: Seção de Pessoal (P1)" />
+                <input name="location" required defaultValue={editingItem?.location} className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-medium" placeholder="Ex: Seção de Pessoal (P1)" />
               </div>
             </div>
-            <div className="p-6 bg-slate-50 border-t flex gap-3">
-              <button type="button" onClick={() => setIsFormModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 hover:text-slate-700 transition-colors">CANCELAR</button>
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
+              <button type="button" onClick={() => setIsFormModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:text-slate-300 transition-colors">CANCELAR</button>
               <button type="submit" className="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold shadow-lg shadow-blue-900/20 hover:bg-blue-950 transition-all active:scale-95">SALVAR REGISTRO</button>
             </div>
           </form>
@@ -608,15 +608,15 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       {/* Modais de Acautelamento e Uso */}
       {isCautionModalOpen && selectedItem && (
         <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-md w-full border dark:border-slate-700 overflow-hidden">
             <div className="p-6 bg-blue-900 text-white flex justify-between items-center"><h3 className="text-xl font-bold tracking-tight">Acautelar Material</h3><button onClick={() => setIsCautionModalOpen(false)}><Plus className="rotate-45" size={24} /></button></div>
             <div className="p-6 space-y-5">
-              <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Policial Responsável (Pesquise Nome ou Matrícula)</label>
+              <label className="block text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Policial Responsável (Pesquise Nome ou Matrícula)</label>
               <div className="relative">
                 <input
                   list="personnel-list"
                   placeholder="Pesquise para selecionar..."
-                  className="w-full p-3 border-2 rounded-xl bg-slate-50 font-bold focus:border-blue-900 focus:outline-none"
+                  className="w-full p-3 border-2 rounded-xl bg-slate-50 dark:bg-slate-950 font-bold focus:border-blue-900 focus:outline-none"
                   onChange={(e) => {
                     const selected = personnel.find(p => `${p.rank} ${p.name} (Mat. ${p.registration})` === e.target.value);
                     if (selected) setSelectedPersonnelId(selected.id);
@@ -635,8 +635,8 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                 <AlertCircle className="text-amber-600 shrink-0" size={18} /><p>Ao confirmar, você atesta que o material foi conferido e entregue em perfeitas condições.</p>
               </div>
             </div>
-            <div className="p-6 bg-slate-50 border-t flex gap-3">
-              <button onClick={() => setIsCautionModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500">CANCELAR</button>
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
+              <button onClick={() => setIsCautionModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400">CANCELAR</button>
               <button onClick={handleAcautelar} disabled={!selectedPersonnelId} className="flex-1 py-3 bg-blue-900 text-white rounded-xl font-bold disabled:bg-slate-300">CONFIRMAR</button>
             </div>
           </div>
@@ -645,21 +645,21 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
 
       {isUseModalOpen && selectedItem && (
         <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full border overflow-hidden">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-sm w-full border dark:border-slate-700 overflow-hidden">
             <div className="p-6 bg-slate-800 text-white flex justify-between items-center"><h3 className="text-xl font-bold tracking-tight">Baixa de Munição</h3><button onClick={() => setIsUseModalOpen(false)}><Plus className="rotate-45" size={24} /></button></div>
             <div className="p-6 space-y-5">
               <div className="bg-emerald-50 p-3 rounded-lg flex justify-between items-center font-bold text-sm"><span className="text-emerald-800 uppercase text-[10px]">Lote Disponível:</span><span className="text-lg text-emerald-900">{(selectedItem.ammo_total || 0) - (selectedItem.ammo_spent || 0)}</span></div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Quantidade Deflagrada</label>
+                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Quantidade Deflagrada</label>
                 <div className="flex items-center gap-4">
-                  <button onClick={() => setUseQuantity(q => Math.max(0, q - 1))} className="w-10 h-10 bg-slate-100 rounded-lg font-black">-</button>
+                  <button onClick={() => setUseQuantity(q => Math.max(0, q - 1))} className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg font-black">-</button>
                   <input type="number" className="flex-1 text-center p-2 text-xl font-black focus:outline-none" value={useQuantity} onChange={e => setUseQuantity(Number(e.target.value))} />
-                  <button onClick={() => setUseQuantity(q => q + 1)} className="w-10 h-10 bg-slate-100 rounded-lg font-black">+</button>
+                  <button onClick={() => setUseQuantity(q => q + 1)} className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg font-black">+</button>
                 </div>
               </div>
             </div>
-            <div className="p-6 bg-slate-50 border-t flex gap-3">
-              <button onClick={() => setIsUseModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 uppercase text-xs">Sair</button>
+            <div className="p-6 bg-slate-50 dark:bg-slate-950 border-t dark:border-slate-700 flex gap-3">
+              <button onClick={() => setIsUseModalOpen(false)} className="flex-1 py-3 font-bold text-slate-500 dark:text-slate-400 uppercase text-xs">Sair</button>
               <button onClick={handleRegisterUse} disabled={useQuantity <= 0} className="flex-1 py-3 bg-slate-800 text-white rounded-xl font-bold uppercase text-xs shadow-lg">Registrar</button>
             </div>
           </div>

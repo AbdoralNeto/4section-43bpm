@@ -64,15 +64,15 @@ const AuditLogs: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-700 h-full flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4">
-        <div className="bg-white p-6 rounded-2xl border shadow-sm">
+      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md pt-2 pb-4">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border dark:border-slate-700 shadow-sm">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="bg-blue-950 p-3 rounded-2xl text-white shadow-xl">
                 <Shield size={28} />
               </div>
               <div>
-                <h3 className="text-xl font-black text-slate-800 tracking-tight">Auditória e Integridade</h3>
+                <h3 className="text-xl font-black text-slate-800 dark:text-slate-200 tracking-tight">Auditória e Integridade</h3>
                 <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">
                   Livro de Registro Eletrônico
                   {auditLogs.length > 0 && (
@@ -86,7 +86,7 @@ const AuditLogs: React.FC = () => {
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setShowFilters(f => !f)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase transition-all border ${showFilters ? 'bg-blue-900 text-white border-blue-900' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-black uppercase transition-all border dark:border-slate-700 ${showFilters ? 'bg-blue-900 text-white border-blue-900' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:bg-slate-950'}`}
               >
                 <Filter size={14} /> Filtros {hasActiveFilters && <span className="bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[9px]">!</span>}
               </button>
@@ -102,7 +102,7 @@ const AuditLogs: React.FC = () => {
 
           {/* Filtros */}
           {showFilters && (
-            <div className="mt-5 pt-5 border-t grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 animate-in slide-in-from-top-2 duration-200">
+            <div className="mt-5 pt-5 border-t dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 animate-in slide-in-from-top-2 duration-200">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                 <input
@@ -110,13 +110,13 @@ const AuditLogs: React.FC = () => {
                   placeholder="Buscar nos detalhes..."
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50"
+                  className="w-full pl-9 pr-3 py-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950"
                 />
               </div>
               <select
                 value={filterAction}
                 onChange={e => setFilterAction(e.target.value as AuditActionType | '')}
-                className="w-full p-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50 font-medium"
+                className="w-full p-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-medium"
               >
                 <option value="">Todos os Tipos de Ação</option>
                 <option value="Cadastro de Item">Cadastro de Item</option>
@@ -132,7 +132,7 @@ const AuditLogs: React.FC = () => {
               <select
                 value={filterEntity}
                 onChange={e => setFilterEntity(e.target.value as AuditEntityType | '')}
-                className="w-full p-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50 font-medium"
+                className="w-full p-2.5 border-2 rounded-xl text-sm focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-medium"
               >
                 <option value="">Todas as Entidades</option>
                 <option value="item">Item de Carga</option>
@@ -155,8 +155,8 @@ const AuditLogs: React.FC = () => {
       {/* Lista de Registros */}
       <div className="flex-1 overflow-auto min-h-0 space-y-6 pr-2 -mr-2">
         {filteredLogs.length === 0 ? (
-          <div className="bg-white rounded-2xl border shadow-sm p-16 flex flex-col items-center gap-4 text-center">
-            <div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-700 shadow-sm p-16 flex flex-col items-center gap-4 text-center">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center">
               <Shield size={32} className="text-slate-300" />
             </div>
             <div>
@@ -190,11 +190,11 @@ const AuditLogs: React.FC = () => {
             <div className="relative space-y-3">
               <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-slate-200 -z-10" />
               {filteredLogs.map(log => {
-                const style = ACTION_COLORS[log.action] ?? { bg: 'bg-slate-50', text: 'text-slate-600', icon: <Clock size={22} /> };
+                const style = ACTION_COLORS[log.action] ?? { bg: 'bg-slate-50 dark:bg-slate-950', text: 'text-slate-600 dark:text-slate-400', icon: <Clock size={22} /> };
                 return (
                   <div
                     key={log.id}
-                    className="bg-white p-5 rounded-2xl border shadow-sm flex gap-5 hover:shadow-md transition-all group border-l-4 border-l-transparent hover:border-l-blue-600"
+                    className="bg-white dark:bg-slate-900 p-5 rounded-2xl border dark:border-slate-700 shadow-sm flex gap-5 hover:shadow-md transition-all group border-l dark:border-slate-700-4 border-l dark:border-slate-700-transparent hover:border-l dark:border-slate-700-blue-600"
                   >
                     <div className={`shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${style.bg} ${style.text}`}>
                       {style.icon}
@@ -202,20 +202,20 @@ const AuditLogs: React.FC = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-2">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-black text-slate-800 text-sm uppercase tracking-tight">{log.action}</h4>
+                          <h4 className="font-black text-slate-800 dark:text-slate-200 text-sm uppercase tracking-tight">{log.action}</h4>
                           <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${style.bg} ${style.text}`}>
                             {ENTITY_LABELS[log.entity_type]}
                           </span>
                         </div>
-                        <span className="text-[10px] font-black text-slate-400 bg-slate-100 px-2 py-1 rounded shrink-0">
+                        <span className="text-[10px] font-black text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded shrink-0">
                           {new Date(log.timestamp).toLocaleString('pt-BR')}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-600 mt-2 font-medium leading-relaxed">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 font-medium leading-relaxed">
                         {log.details.split('|').map((part, i) => (
-                          <span key={i} className={i > 0 ? 'border-l pl-2 ml-2 border-slate-200' : ''}>
+                          <span key={i} className={i > 0 ? 'border-l dark:border-slate-700 pl-2 ml-2 border-slate-200 dark:border-slate-700' : ''}>
                             {part.trim().split(':').map((sub, j) => (
-                              <span key={j} className={j === 0 ? 'text-[10px] font-black text-slate-400 uppercase' : 'text-slate-700 font-bold'}>
+                              <span key={j} className={j === 0 ? 'text-[10px] font-black text-slate-400 uppercase' : 'text-slate-700 dark:text-slate-300 font-bold'}>
                                 {sub}{j === 0 && part.includes(':') ? ': ' : ''}
                               </span>
                             ))}
@@ -234,7 +234,7 @@ const AuditLogs: React.FC = () => {
             </div>
 
             {/* Footer com ação de limpar */}
-            <div className="bg-white rounded-2xl border shadow-sm p-4 flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-700 shadow-sm p-4 flex items-center justify-between">
               <p className="text-xs text-slate-400 font-medium">
                 {filteredLogs.length} registro{filteredLogs.length !== 1 ? 's' : ''} exibido{filteredLogs.length !== 1 ? 's' : ''}
               </p>

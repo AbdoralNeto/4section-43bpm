@@ -54,15 +54,15 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 h-full flex flex-col overflow-hidden">
-      <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur-md pt-2 pb-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-6 rounded-2xl border shadow-sm border-l-8 border-l-blue-900">
+      <div className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md pt-2 pb-4">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border dark:border-slate-700 shadow-sm border-l dark:border-slate-700-8 border-l dark:border-slate-700-blue-900">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-2xl bg-blue-900 text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-blue-900/20">
               {officer.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-2xl font-black text-slate-800 tracking-tight uppercase">{officer.rank} {officer.name}</h3>
+                <h3 className="text-2xl font-black text-slate-800 dark:text-slate-200 tracking-tight uppercase">{officer.rank} {officer.name}</h3>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase ${officer.status === 'Ativo' ? 'bg-emerald-100 text-emerald-700' :
                     officer.status === 'Férias' ? 'bg-blue-100 text-blue-700' :
                       officer.status === 'LP' ? 'bg-amber-100 text-amber-700' :
@@ -71,12 +71,12 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
                   {officer.status || 'Ativo'}
                 </span>
               </div>
-              <p className="text-slate-500 font-mono text-sm mt-1">Matrícula: <span className="font-bold">{officer.registration}</span> | Função: {officer.function}</p>
+              <p className="text-slate-500 dark:text-slate-400 font-mono text-sm mt-1">Matrícula: <span className="font-bold">{officer.registration}</span> | Função: {officer.function}</p>
             </div>
           </div>
           <Link
             to="/efetivo"
-            className="flex items-center gap-2 px-6 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-all active:scale-95"
+            className="flex items-center gap-2 px-6 py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl font-bold hover:bg-slate-200 transition-all active:scale-95"
           >
             <ArrowLeft size={18} /> VOLTAR
           </Link>
@@ -84,8 +84,8 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
       </div>
 
       <div className="flex-1 overflow-auto min-h-0 space-y-6">
-        <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
-          <div className="px-6 py-4 bg-slate-50 border-b flex justify-between items-center">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border dark:border-slate-700 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-950 border-b dark:border-slate-700 flex justify-between items-center">
             <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
               <ShieldCheck size={16} className="text-blue-900" /> Relação de Carga Individual
             </h4>
@@ -96,7 +96,7 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
 
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b bg-slate-50/50">
+              <tr className="border-b dark:border-slate-700 bg-slate-50 dark:bg-slate-950/50">
                 <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Material / Tipo</th>
                 <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Identificação</th>
                 <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Data Acautelamento</th>
@@ -105,14 +105,14 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
             </thead>
             <tbody className="divide-y divide-slate-100">
               {items.length > 0 ? items.map(item => (
-                <tr key={item.id} className="hover:bg-slate-50/50 transition-colors group">
+                <tr key={item.id} className="hover:bg-slate-50 dark:bg-slate-950/50 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-2 bg-slate-100 rounded-lg text-slate-500 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                      <div className="p-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-500 dark:text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
                         {getIcon(item)}
                       </div>
                       <div>
-                        <p className="font-bold text-slate-800 uppercase text-sm">{item.model}</p>
+                        <p className="font-bold text-slate-800 dark:text-slate-200 uppercase text-sm">{item.model}</p>
                         <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tight">{item.category} {item.type ? `• ${item.type}` : ''}</p>
                       </div>
                     </div>
@@ -120,13 +120,13 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
                   <td className="px-6 py-4">
                     <div className="space-y-0.5">
                       {item.plate && <p className="text-xs font-black text-blue-700">PLACA: {item.plate}</p>}
-                      {item.prefix && <p className="text-[10px] font-bold text-slate-500">PREFIXO: {item.prefix}</p>}
-                      {item.serial_number && !item.plate && <p className="text-xs font-mono font-bold text-slate-700">SÉRIE: {item.serial_number}</p>}
-                      {item.patrimony && <p className="text-[10px] font-bold text-slate-500 italic">TOMBO: #{item.patrimony}</p>}
+                      {item.prefix && <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400">PREFIXO: {item.prefix}</p>}
+                      {item.serial_number && !item.plate && <p className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">SÉRIE: {item.serial_number}</p>}
+                      {item.patrimony && <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 italic">TOMBO: #{item.patrimony}</p>}
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-slate-600">
+                    <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
                       <Calendar size={14} className="opacity-40" />
                       <span className="text-sm font-medium">{formatDateLocal(item.caution_date || item.acquisition_date)}</span>
                     </div>
