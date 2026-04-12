@@ -122,8 +122,8 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       if (editingItem && item.id === editingItem.id) return false;
 
       if (category === ItemCategory.VIATURA) {
-        return (submittedPlate && item.plate === submittedPlate) || 
-               (submittedPrefix && item.prefix === submittedPrefix);
+        return (submittedPlate && item.plate === submittedPlate) ||
+          (submittedPrefix && item.prefix === submittedPrefix);
       }
       if (category === ItemCategory.INFORMATICA || category === ItemCategory.MOBILIA) {
         return submittedPatrimony && item.patrimony === submittedPatrimony;
@@ -135,7 +135,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
     });
 
     if (isDuplicate) {
-      alert('Já existe um item cadastrado com esta identificação (Série, Placa, Prefixo ou Tombo)!');
+      alert('Já existe um item cadastrado com esta identificação!');
       return;
     }
 
