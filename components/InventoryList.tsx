@@ -480,17 +480,28 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                       <>
                         {item.type === BelicoType.MUNICAO ? (
                           <button onClick={() => { setSelectedItem(item); setIsUseModalOpen(true); }} className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Uso"><Flame size={16} /></button>
-                        ) : item.status === ItemStatus.DISPONIVEL ? (
-                          <button onClick={() => { setSelectedItem(item); setIsCautionModalOpen(true); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Acautelar"><ArrowRightLeft size={16} /></button>
-                        ) : item.status === ItemStatus.ACAUTELADO ? (
-                          <button
-                            onClick={() => { setSelectedItem(item); setIsDecautionModalOpen(true); }}
-                            className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                            title="Descautelar"
-                          >
-                            <ArrowRightLeft size={16} className="rotate-180" />
-                          </button>
-                        ) : null}
+                        ) : (
+                          <>
+                            {(item.status === ItemStatus.DISPONIVEL || item.status === ItemStatus.ACAUTELADO) && (
+                              <button
+                                onClick={() => { setSelectedItem(item); setIsCautionModalOpen(true); }}
+                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                title="Acautelar"
+                              >
+                                <ArrowRightLeft size={16} />
+                              </button>
+                            )}
+                            {item.status === ItemStatus.ACAUTELADO && (
+                              <button
+                                onClick={() => { setSelectedItem(item); setIsDecautionModalOpen(true); }}
+                                className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                                title="Descautelar"
+                              >
+                                <ArrowRightLeft size={16} className="rotate-180" />
+                              </button>
+                            )}
+                          </>
+                        )}
                         <button onClick={() => handleOpenEdit(item)} className="p-2 text-slate-400 hover:bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors" title="Editar"><Edit2 size={16} /></button>
                         <button onClick={() => onDeleteItem(item.id)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors" title="Excluir"><Trash2 size={16} /></button>
                       </>
