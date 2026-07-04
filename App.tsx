@@ -274,7 +274,7 @@ const AppContent = () => {
             <Route path="/informatica" element={<InventoryList category={ItemCategory.INFORMATICA} inventory={inventory} personnel={personnel} onUpdateItem={handleUpdateItem} onAddItem={handleAddItem} onDeleteItem={handleDeleteItem} />} />
             <Route path="/mobilia" element={<InventoryList category={ItemCategory.MOBILIA} inventory={inventory} personnel={personnel} onUpdateItem={handleUpdateItem} onAddItem={handleAddItem} onDeleteItem={handleDeleteItem} />} />
             <Route path="/efetivo" element={<PersonnelList personnel={personnel} inventory={inventory} onAddMember={handleAddPersonnel} onUpdateMember={handleUpdatePersonnel} onDeleteMember={handleDeletePersonnel} />} />
-            <Route path="/efetivo/:personnelId/itens" element={<PersonnelItemsView inventory={inventory} personnel={personnel} />} />
+            <Route path="/efetivo/:personnelId/itens" element={<PersonnelItemsView inventory={inventory} personnel={personnel} onUpdateItem={handleUpdateItem} />} />
             <Route path="/auditoria" element={session?.role === 'admin' ? <AuditLogs /> : <Navigate to="/" replace />} />
             <Route path="/config" element={session?.role === 'admin' ? <SettingsPage /> : <Navigate to="/" replace />} />
           </Routes>
