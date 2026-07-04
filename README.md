@@ -20,12 +20,9 @@ O **4section-PM** é uma aplicação moderna para gestão de estoque e pessoal d
 
 ## 📚 Documentação Técnica
 
-Para informações detalhadas, consulte os seguintes documentos (KIs):
-
-- [Visão Geral da Arquitetura](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/architecture_overview.md)
-- [Esquema do Banco de Dados](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/database_schema.md)
-- [Fluxo de Autenticação](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/authentication_flow.md)
-- [Guia de Configuração Local](file:///C:/Users/n3to_/.gemini/antigravity/brain/4efb646e-3101-43c0-b439-af9e627dfaf3/environment_setup.md)
+A documentação do sistema está estruturada para orientar o desenvolvedor e a seção de TI do batalhão:
+- [Guia de Configuração Local](.env.example) — Passos para configurar as credenciais do Supabase.
+- **Segurança**: O sistema exige HTTPS/SSL ativo em produção devido ao uso da Web Crypto API do navegador para login de militares.
 
 ## 🚀 Como Executar
 

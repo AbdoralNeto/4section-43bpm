@@ -22,10 +22,10 @@ function addDarkClasses(text) {
   text = text.replace(/border-slate-200\b(?! dark:)/g, 'border-slate-200 dark:border-slate-700');
   text = text.replace(/border-slate-300\b(?! dark:)/g, 'border-slate-300 dark:border-slate-700');
   text = text.replace(/border-gray-300\b(?! dark:)/g, 'border-gray-300 dark:border-slate-700');
-  text = text.replace(/border-t\b(?! border-)/g, 'border-t dark:border-slate-700');
-  text = text.replace(/border-b\b(?! border-)/g, 'border-b dark:border-slate-700');
-  text = text.replace(/border-r\b(?! border-)/g, 'border-r dark:border-slate-700');
-  text = text.replace(/border-l\b(?! border-)/g, 'border-l dark:border-slate-700');
+  text = text.replace(/border-t\b(?!-)(?! border-)/g, 'border-t dark:border-slate-700');
+  text = text.replace(/border-b\b(?!-)(?! border-)/g, 'border-b dark:border-slate-700');
+  text = text.replace(/border-r\b(?!-)(?! border-)/g, 'border-r dark:border-slate-700');
+  text = text.replace(/border-l\b(?!-)(?! border-)/g, 'border-l dark:border-slate-700');
   
   // Replace hover states
   text = text.replace(/hover:bg-slate-50\b(?! dark:)/g, 'hover:bg-slate-50 dark:hover:bg-slate-800');

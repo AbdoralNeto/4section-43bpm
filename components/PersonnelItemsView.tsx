@@ -55,7 +55,7 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 h-full flex flex-col overflow-hidden">
       <div className="sticky top-0 z-10 bg-slate-50 dark:bg-slate-950/80 backdrop-blur-md pt-2 pb-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border dark:border-slate-700 shadow-sm border-l dark:border-slate-700-8 border-l dark:border-slate-700-blue-900">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border dark:border-slate-700 shadow-sm border-l-8 border-l-blue-900">
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-2xl bg-blue-900 text-white flex items-center justify-center font-black text-2xl shadow-xl shadow-blue-900/20">
               {officer.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}

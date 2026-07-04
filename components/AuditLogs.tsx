@@ -194,7 +194,7 @@ const AuditLogs: React.FC = () => {
                 return (
                   <div
                     key={log.id}
-                    className="bg-white dark:bg-slate-900 p-5 rounded-2xl border dark:border-slate-700 shadow-sm flex gap-5 hover:shadow-md transition-all group border-l dark:border-slate-700-4 border-l dark:border-slate-700-transparent hover:border-l dark:border-slate-700-blue-600"
+                    className="bg-white dark:bg-slate-900 p-5 rounded-2xl border dark:border-slate-700 shadow-sm flex gap-5 hover:shadow-md transition-all group border-l-4 border-l-transparent hover:border-l-blue-600 dark:hover:border-l-blue-500"
                   >
                     <div className={`shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${style.bg} ${style.text}`}>
                       {style.icon}

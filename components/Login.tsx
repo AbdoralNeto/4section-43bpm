@@ -14,6 +14,7 @@ const Login: React.FC = () => {
 
     const isLocked = lockedUntil !== null && Date.now() < lockedUntil;
     const lockRemaining = isLocked ? Math.ceil((lockedUntil! - Date.now()) / 1000) : 0;
+    const isCryptoUnavailable = typeof crypto === 'undefined' || !crypto.subtle;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -68,6 +69,17 @@ const Login: React.FC = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="p-8 space-y-5" autoComplete="off">
+                        {/* Crypto / HTTPS Warning */}
+                        {isCryptoUnavailable && (
+                            <div className="flex items-start gap-3 bg-amber-950/40 border border-amber-900/60 rounded-xl px-4 py-3 animate-in slide-in-from-top-2 duration-200">
+                                <AlertCircle className="text-amber-400 shrink-0 mt-0.5" size={16} />
+                                <div className="text-left text-xs text-amber-300 font-medium space-y-1">
+                                    <p className="font-bold uppercase tracking-wide">Ambiente Inseguro (HTTP)</p>
+                                    <p>As funções de criptografia do navegador estão desativadas. Para realizar o login, acesse o sistema utilizando <strong>HTTPS</strong> ou através de <strong>localhost</strong>.</p>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Military ID */}
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
@@ -136,7 +148,7 @@ const Login: React.FC = () => {
                         {/* Submit */}
                         <button
                             type="submit"
-                            disabled={isLoading || isLocked || !militaryId || !password}
+                            disabled={isLoading || isLocked || !militaryId || !password || isCryptoUnavailable}
                             className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest rounded-xl transition-all active:scale-95 shadow-lg shadow-blue-900/40 disabled:bg-slate-700 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-3 mt-2"
                         >
                             {isLoading ? (

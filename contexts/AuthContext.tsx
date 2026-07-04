@@ -186,7 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 name: user.name,
                 rank: user.rank,
                 role: user.role,
-                token: crypto.randomUUID(),
+                token: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : 'session-' + Math.random().toString(36).substring(2) + Date.now().toString(36),
                 expires_at: Date.now() + SESSION_TTL,
             };
             saveSession(s);
