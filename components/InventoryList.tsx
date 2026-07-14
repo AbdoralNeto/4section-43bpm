@@ -212,8 +212,8 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       const updatedItem: InventoryItem = {
         ...selectedItem,
         status: ItemStatus.DISPONIVEL,
-        responsible_id: undefined,
-        caution_date: undefined,
+        responsible_id: null,
+        caution_date: null,
         location: defaultLocation,
       };
       onUpdateItem(updatedItem);

@@ -43,7 +43,7 @@ export interface InventoryItem {
   expiry_date?: string;
   status: ItemStatus;
   location: string;
-  responsible_id?: string; // Personnel ID
+  responsible_id?: string | null; // Personnel ID
   observations?: string | null;
   pericia_date?: string;
   km?: number;
@@ -51,7 +51,7 @@ export interface InventoryItem {
   prefix?: string;
   plate?: string;
   origin?: 'PMMA' | 'LOCADA';
-  caution_date?: string;
+  caution_date?: string | null;
   // Campos específicos para Munição
   ammo_total?: number;
   ammo_spent?: number;
