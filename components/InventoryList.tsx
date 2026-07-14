@@ -149,7 +149,7 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
       patrimony: formData.get('patrimony') as string,
       caliber: formData.get('caliber') as string,
       status: formStatus,
-      location: formData.get('location') as string,
+      location: (category === ItemCategory.VIATURA && formStatus === ItemStatus.DISPONIVEL) ? 'UPM' : (formData.get('location') as string),
       acquisition_date: editingItem?.acquisition_date || new Date().toISOString(),
       expiry_date: expiryYear ? `${expiryYear}-12-31` : editingItem?.expiry_date,
       ammo_total: category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO ? Number(formData.get('ammoTotal')) : undefined,
@@ -208,7 +208,11 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
   const handleDescautelar = () => {
     if (selectedItem) {
       const responsible = personnel.find(p => p.id === selectedItem.responsible_id);
-      const defaultLocation = selectedItem.type === BelicoType.MUNICAO ? 'Paiol Central' : 'RESERVA DE ARMAMENTO';
+      const defaultLocation = selectedItem.category === ItemCategory.VIATURA
+        ? 'UPM'
+        : selectedItem.type === BelicoType.MUNICAO
+          ? 'Paiol Central'
+          : 'RESERVA DE ARMAMENTO';
       const updatedItem: InventoryItem = {
         ...selectedItem,
         status: ItemStatus.DISPONIVEL,
@@ -641,13 +645,20 @@ const InventoryList: React.FC<InventoryListProps> = ({ category, inventory, pers
                   {isITorFurniture ? 'Local de Destino / Instalação' : 'Localização / Pátio'}
                 </label>
                 <input
+                  key={`${category}-${formStatus}`}
                   name="location"
                   required
-                  defaultValue={editingItem?.location ?? (
-                    category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO
-                      ? 'Paiol Central'
-                      : 'RESERVA DE ARMAMENTO'
-                  )}
+                  defaultValue={
+                    category === ItemCategory.VIATURA && formStatus === ItemStatus.DISPONIVEL
+                      ? 'UPM'
+                      : editingItem?.location ?? (
+                        category === ItemCategory.BELICO && activeSubTab === BelicoType.MUNICAO
+                          ? 'Paiol Central'
+                          : category === ItemCategory.VIATURA
+                            ? 'UPM'
+                            : 'RESERVA DE ARMAMENTO'
+                      )
+                  }
                   className="w-full p-3 border-2 rounded-xl focus:border-blue-900 focus:outline-none bg-slate-50 dark:bg-slate-950 font-medium"
                   placeholder="Ex: Seção de Pessoal (P1)"
                 />

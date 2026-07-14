@@ -36,8 +36,8 @@ const SESSION_KEY = 'siscarga_session';
 const SESSION_TTL = 8 * 60 * 60 * 1000; // 8 hours
 
 // Default admin (set on first run — password must be changed on first login ideally)
-const DEFAULT_ADMIN_MILITARY_ID = 'ADM-00001';
-const DEFAULT_ADMIN_PASSWORD = 'Admin@2025';
+const DEFAULT_ADMIN_MILITARY_ID = '';
+const DEFAULT_ADMIN_PASSWORD = '';
 
 // ─── Context ─────────────────────────────────────────────────────────────────
 

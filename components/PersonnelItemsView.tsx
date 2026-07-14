@@ -63,7 +63,11 @@ const PersonnelItemsView: React.FC<PersonnelItemsViewProps> = ({ inventory, pers
 
   const handleDescautelar = () => {
     if (selectedItem && officer) {
-      const defaultLocation = selectedItem.type === BelicoType.MUNICAO ? 'Paiol Central' : 'RESERVA DE ARMAMENTO';
+      const defaultLocation = selectedItem.category === ItemCategory.VIATURA
+        ? 'UPM'
+        : selectedItem.type === BelicoType.MUNICAO
+          ? 'Paiol Central'
+          : 'RESERVA DE ARMAMENTO';
       const updatedItem: InventoryItem = {
         ...selectedItem,
         status: ItemStatus.DISPONIVEL,
